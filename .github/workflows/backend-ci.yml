@@ -26,4 +26,4 @@ jobs:
 
     - name: Run Pytest suite
       run: |
-        pytest backend/app/tests/
+        pytest backend/app/tests/ agents/

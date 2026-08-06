@@ -35,8 +35,8 @@ jobs:
 
     - name: Install frontend dependencies
       run: |
-        npm ci
+        npm ci --prefix frontend
 
     - name: Verify production React build compiles
       run: |
-        npm run build
+        npm run build --prefix frontend
