@@ -1,57 +1,91 @@
-# Veridion: Enterprise Procurement Decision Intelligence Platform
+# 🛡️ Procura: B2B Enterprise Procurement Decision Intelligence Platform
 
-Veridion is a B2B Enterprise Procurement Decision Intelligence Platform that automates quotation auditing, checks compliance exceptions, compares vendors side-by-side, and generates Purchase Orders using a co-operative multi-agent AI architecture.
+Procura is a B2B Enterprise Procurement Decision Intelligence Platform designed to automate quotation auditing, validate compliance exceptions, compare vendors side-by-side, and coordinate purchase orders using an advanced multi-agent AI architecture.
 
-## Key Features
+---
 
-1. **Intelligent OCR Document Parsing**: Accepts PDF/images invoice files, parses rate matrices and GST details with 96% accuracy.
-2. **Side-by-Side Competitive Matrices**: Interactive analytics scoring warranty ranges, delivery delays, and pricing models.
-3. **Automated Validation Rules**: Installs compliance policy filters to scan budget limits and invalid tax identifications.
-4. **Compliance Exception Override Logs**: Logs override signatures and written justifications directly to database timelines.
-5. **Purchase Order Dispatches**: Connects approved bids, compiles PO documents, and synchronizes dispatch states.
+## 🚀 Key Modules & Capabilities
 
-## Tech Stack
+1. **Intelligent Document OCR**: Extracts tabular invoice terms from complex multi-page PDF documents.
+2. **Cooperative Multi-Agent Orchestrator**: Executes a workflow pipeline where single-responsibility AI agents (OCR, Extraction, Vendor Intel, Comparison, Policy, PO, Audit) communicate through standard message schemas.
+3. **Interactive Comparison Workspaces**: Displays competitive analytics dashboards measuring warranty ranges, delivery timelines, and unit costs side-by-side.
+4. **Conditional Sign-off Engine**: Enforces multi-level approval thresholds (e.g. manager signatures for small values, finance sign-off for large values).
+5. **Centralized Alerts Inbox**: Feeds unread notification metrics and system state alerts.
+6. **Performance Logs Panel**: Tracks latency trends, failure flags, and database connection metrics.
 
-- **Frontend**: React (TypeScript), TailwindCSS, Recharts, Framer Motion, Lucide icons.
-- **Backend**: FastAPI (Python), JWT Session Guards.
-- **Database**: SQLite (Local development DB file) / PostgreSQL (Production connection strings).
-- **Automation Pipeline**: 6 Specialized AI Agents (OCR, Extraction, Vendor Intelligence, Policy, PO, Audit).
+---
 
-## Repository Structures
+## 🛠️ Technology Stack
+
+| Layer | Technologies |
+|---|---|
+| **Frontend** | React (TypeScript), TailwindCSS, Recharts, Framer Motion, Lucide Icons |
+| **Backend** | Python 3.12, FastAPI, SQLAlchemy 2.0, Celery, Redis, Pydantic v2, Loguru |
+| **Database** | SQLite (Local fallback file) / PostgreSQL (Supabase / Production connection) |
+| **Orchestration** | Multi-Agent AI Pipeline, In-Memory Worker, BackgroundTasks |
+
+---
+
+## 📂 Repository Structures
 
 ```text
+procura/
 ├── backend/
-│   ├── main.py            # FastAPI endpoints router
-│   ├── database.py        # SQLAlchemy database model schemes
-│   ├── auth.py            # JWT token and RBAC checker
-│   ├── agents.py          # OCR, Extraction, Policy, PO, Audit Agents
-│   ├── test_main.py       # Unit checks for backend routes
-│   └── requirements.txt   # Python server package lists
-├── src/
-│   ├── pages/             # Requisitions, Admin dashboards, Help portals
-│   ├── services/api.ts    # Axios type-safe integrated API client
-│   └── routes/AppRoutes.ts# Public and guarded URL paths
+│   ├── app/
+│   │   ├── agents/          # OCR, Extraction, Vendor Intel, Policy, PO, Audit
+│   │   │   └── orchestrator/# Pipeline orchestration coordinator
+│   │   ├── api/v1/          # Endpoints (Requisitions, Vendors, Jobs, Dashboard)
+│   │   ├── core/            # Config parsing, database connection pool, caching
+│   │   ├── db/              # SQLAlchemy Base class and meta registrations
+│   │   ├── models/          # Database ORM models (PR, Quotation, PO, Notifications)
+│   │   ├── schemas/         # Pydantic v2 response schemas and GST validation
+│   │   ├── services/        # Decoupled business logic services
+│   │   ├── scripts/         # SQL backup/restore and demo seeder scripts
+│   │   └── tests/           # Unit, integration, and performance tests
+│   ├── main.py              # Application main startup file
+│   └── requirements.txt     # Python packages index
+└── src/
+    ├── layouts/             # Dashboard layouts
+    ├── pages/               # Landing, Requisitions, Admin, Users logs
+    ├── services/api.ts      # Integrated type-safe Axios client
+    └── main.tsx             # Entry node
 ```
 
-## Installation & Running
+---
 
-### 1. Run backend server
+## 🏗️ Installation & Setup
+
+### 1. Backend Server Setup
+Ensure python is installed and create a virtual environment:
 ```bash
-# Install dependencies
-pip install -r backend/requirements.txt
+# Enter backend folder
+cd backend
 
-# Start FastAPI API node
-uvicorn backend.main:app --reload
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run database seeder to populate mock scenarios dataset
+python app/scripts/seed_demo_data.py
+
+# Start FastAPI local node
+uvicorn app.main:app --reload
 ```
 
-### 2. Run frontend web portal
+### 2. Frontend Build
+Start the Vite dev server locally:
 ```bash
-# Install dependencies
+# Install node packages
 npm install
 
-# Start local server
+# Run dev server
 npm run dev
 ```
 
-## License
-MIT License. See [LICENSE](file:///C:/CODING/PROJECTS/veridion/LICENSE) for details.
+---
+
+## 📝 License
+Distributed under the MIT License. See `LICENSE` for details.

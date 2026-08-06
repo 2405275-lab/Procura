@@ -1,7 +1,7 @@
 # Product Requirement Document (PRD)
 
 ## Project Overview
-Veridion is an Enterprise Procurement Decision Intelligence Platform that automates the quotation review lifecycle using a multi-agent AI architecture.
+Procura is an Enterprise Procurement Decision Intelligence Platform that automates the quotation review lifecycle using a multi-agent AI architecture.
 
 ## Target Audience
 Procurement Directors, Finance Officers, Purchase Managers, and Compliance Auditors.

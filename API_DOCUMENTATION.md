@@ -1,4 +1,4 @@
-# Veridion REST API Reference
+# Procura REST API Reference
 
 The FastAPI backend exposes interactive OpenAPI docs at `http://localhost:8000/docs`.
 
@@ -9,7 +9,7 @@ The FastAPI backend exposes interactive OpenAPI docs at `http://localhost:8000/d
 - **Request Body**:
   ```json
   {
-    "email": "sarah.j@veridion.io",
+    "email": "sarah.j@procura.io",
     "password": "password"
   }
   ```

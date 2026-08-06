@@ -1,6 +1,6 @@
 # AI Agents and Skills Matrix
 
-This document outlines the interfaces and operations of Veridion's Agent Network.
+This document outlines the interfaces and operations of Procura's Agent Network.
 
 ## Operations Matrix
 

@@ -1,0 +1,17 @@
+# Database
+*.db
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Build
+dist/
+
+# Environment
+.env
+.env.*

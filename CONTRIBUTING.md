@@ -1,6 +1,6 @@
-# Contributing to Veridion
+# Contributing to Procura
 
-We welcome contributions to Veridion!
+We welcome contributions to Procura!
 
 ## Development Guidelines
 

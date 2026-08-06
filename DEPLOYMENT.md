@@ -1,6 +1,6 @@
-# Veridion Production Deployment Guide
+# Procura Production Deployment Guide
 
-Veridion is designed to be easily deployed to Vercel (for frontend React) and Render or Supabase (for backend FastAPI and PostgreSQL).
+Procura is designed to be easily deployed to Vercel (for frontend React) and Render or Supabase (for backend FastAPI and PostgreSQL).
 
 ## 1. Frontend Deployment (Vercel)
 1. Set up a new project on Vercel importing this repository.

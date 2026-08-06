@@ -1,4 +1,4 @@
-name: Veridion Full-Stack CI Pipeline
+name: Procura Full-Stack CI Pipeline
 
 on:
   push:

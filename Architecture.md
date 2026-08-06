@@ -1,6 +1,6 @@
-# Veridion Platform Architecture
+# Procura Platform Architecture
 
-Veridion is structured as a modular full-stack web application designed for enterprise procurement auditing.
+Procura is structured as a modular full-stack web application designed for enterprise procurement auditing.
 
 ## Tech Stack Overview
 

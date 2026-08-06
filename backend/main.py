@@ -14,7 +14,7 @@ from backend.agents import OCRAgent, ExtractionAgent, VendorIntelligenceAgent, P
 # Init db tables and seed data
 init_db()
 
-app = FastAPI(title="Veridion Procurement AI API", version="1.0.0")
+app = FastAPI(title="Procura Procurement AI API", version="1.0.0")
 
 # Enable CORS for frontend workspace port
 app.add_middleware(

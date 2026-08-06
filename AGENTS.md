@@ -1,6 +1,6 @@
-# Veridion AI Agent Network
+# Procura AI Agent Network
 
-Veridion relies on six specialized, co-operative agents to automate the procurement and quotation validation cycle.
+Procura relies on six specialized, co-operative agents to automate the procurement and quotation validation cycle.
 
 ## 1. OCR Agent
 - **File**: `backend/agents.py`
