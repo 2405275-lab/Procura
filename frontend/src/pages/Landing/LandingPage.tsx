@@ -1,12 +1,10 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/Button';
 import {
-  BrainCircuit,
   ShieldCheck,
   ArrowRight,
   Cpu,
-  Sparkles,
-  GitCompare
+  BarChart3
 } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
@@ -17,108 +15,205 @@ export const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col justify-between font-sans overflow-x-hidden selection:bg-primary-650 selection:text-white">
+    <div className="min-h-screen bg-[#02040d] text-slate-100 flex flex-col justify-between font-sans overflow-x-hidden relative selection:bg-blue-600 selection:text-white">
       
-      {/* Dynamic Background Glows */}
-      <div className="absolute top-0 left-0 right-0 h-[600px] bg-gradient-to-b from-primary-950/20 via-slate-900/10 to-transparent pointer-events-none z-0" />
-      <div className="absolute top-40 left-[10%] h-[300px] w-[300px] rounded-full bg-primary-600/10 blur-[120px] pointer-events-none z-0" />
-      <div className="absolute top-80 right-[15%] h-[350px] w-[350px] rounded-full bg-emerald-600/5 blur-[140px] pointer-events-none z-0" />
+      {/* Background Glow Accents */}
+      <div className="absolute top-0 left-0 right-0 h-[600px] bg-gradient-to-b from-blue-950/15 via-[#02040d]/0 to-transparent pointer-events-none z-0" />
+      <div className="absolute top-40 left-[10%] h-[350px] w-[350px] rounded-full bg-blue-600/5 blur-[120px] pointer-events-none z-0" />
+      <div className="absolute top-80 right-[15%] h-[350px] w-[350px] rounded-full bg-teal-600/5 blur-[140px] pointer-events-none z-0" />
+
+      {/* SVG Glowing Left Wave */}
+      <svg 
+        className="absolute left-0 top-[15%] w-[300px] sm:w-[450px] md:w-[600px] h-[500px] pointer-events-none z-0 opacity-70" 
+        viewBox="0 0 600 500" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path 
+          d="M-50 100 C 180 80, 120 420, 380 360 C 480 340, 500 240, 600 240" 
+          stroke="url(#blueGradient)" 
+          strokeWidth="3.5" 
+          strokeLinecap="round"
+          filter="url(#glowBlue)"
+        />
+        <path 
+          d="M-50 80 C 150 60, 100 440, 360 380 C 460 360, 480 260, 600 260" 
+          stroke="url(#blueGradientLight)" 
+          strokeWidth="1" 
+          strokeLinecap="round"
+        />
+        <defs>
+          <linearGradient id="blueGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#1e40af" stopOpacity="0" />
+            <stop offset="40%" stopColor="#2563eb" stopOpacity="0.9" />
+            <stop offset="70%" stopColor="#3b82f6" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="blueGradientLight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
+            <stop offset="50%" stopColor="#60a5fa" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#93c5fd" stopOpacity="0" />
+          </linearGradient>
+          <filter id="glowBlue" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="10" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
+
+      {/* SVG Glowing Right Wave */}
+      <svg 
+        className="absolute right-0 top-[15%] w-[300px] sm:w-[450px] md:w-[600px] h-[500px] pointer-events-none z-0 opacity-70" 
+        viewBox="0 0 600 500" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path 
+          d="M650 100 C 420 80, 480 420, 220 360 C 120 340, 100 240, 0 240" 
+          stroke="url(#tealGradient)" 
+          strokeWidth="3.5" 
+          strokeLinecap="round"
+          filter="url(#glowTeal)"
+        />
+        <path 
+          d="M650 80 C 450 60, 500 440, 240 380 C 140 360, 120 260, 0 260" 
+          stroke="url(#tealGradientLight)" 
+          strokeWidth="1" 
+          strokeLinecap="round"
+        />
+        <defs>
+          <linearGradient id="tealGradient" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#065f46" stopOpacity="0" />
+            <stop offset="40%" stopColor="#0d9488" stopOpacity="0.9" />
+            <stop offset="70%" stopColor="#10b981" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="tealGradientLight" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0" />
+            <stop offset="50%" stopColor="#34d399" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#a7f3d0" stopOpacity="0" />
+          </linearGradient>
+          <filter id="glowTeal" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="10" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
 
       {/* HEADER NAV */}
-      <header className="w-full max-w-7xl mx-auto px-6 py-4 flex justify-between items-center z-15 border-b border-slate-800/60 backdrop-blur bg-slate-900/30">
-        <div className="flex items-center gap-2 select-none">
-          <div className="h-9 w-9 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-600/30">
-            <BrainCircuit size={18} />
+      <div className="w-full max-w-7xl mx-auto px-6 pt-6 z-10">
+        <header className="w-full border border-slate-800/80 bg-[#060814]/40 backdrop-blur-md px-6 py-3.5 rounded-2xl flex items-center justify-between">
+          <div className="flex items-center gap-3 select-none">
+            <div className="h-8 w-8 overflow-hidden relative flex items-center justify-center rounded-lg">
+              <img 
+                src="/logo.png" 
+                alt="Procura" 
+                className="absolute max-w-none w-[68px] h-auto -top-[4px]" 
+              />
+            </div>
+            <span className="text-sm font-black tracking-widest text-white uppercase">
+              PROCURA
+            </span>
           </div>
-          <span className="text-md font-black tracking-wider bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-            PROCURA
-          </span>
-        </div>
+          <div className="w-4" /> {/* Spacer to balance layout exactly as mockup */}
+        </header>
+      </div>
 
-        <div className="flex items-center gap-4">
-          <button
-            onClick={handleLaunch}
-            className="text-xs font-bold text-slate-350 hover:text-white transition-colors cursor-pointer"
-          >
-            Access Portal
-          </button>
-          <Button
-            size="sm"
-            onClick={handleLaunch}
-            className="text-xs font-semibold px-4 py-1.5 shadow-lg shadow-primary-600/15 gap-1 cursor-pointer"
-          >
-            Request Demo
-            <ArrowRight size={13} />
-          </Button>
-        </div>
-      </header>
-
-      {/* HERO SECTION */}
-      <main className="flex-1 w-full max-w-5xl mx-auto px-6 pt-16 pb-24 z-10 text-center space-y-16">
+      {/* MAIN HERO CONTENT */}
+      <main className="flex-1 w-full max-w-5xl mx-auto px-6 pt-12 pb-16 z-10 text-center flex flex-col justify-center items-center space-y-8">
         
-        <div className="space-y-6 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-950/40 border border-primary-800/40 rounded-full text-primary-400 text-[10px] font-bold tracking-widest uppercase animate-pulse">
-            <Sparkles size={11} /> Enterprise AI Procurement Suite
-          </div>
+        {/* Central Logo Graphic */}
+        <div className="flex flex-col items-center select-none">
+          <img 
+            src="/logo.png" 
+            alt="Procura AI Logo" 
+            className="h-44 w-auto object-contain"
+          />
+        </div>
 
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-none text-white">
-            Automate Quotation Auditing with{' '}
-            <span className="bg-gradient-to-r from-primary-400 to-emerald-400 bg-clip-text text-transparent">
-              Decision Intelligence
+        {/* Enterprise Pill Badge */}
+        <div className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-blue-950/30 border border-dashed border-blue-900/60 rounded-full text-blue-400 text-[10px] font-bold tracking-widest uppercase backdrop-blur-sm">
+          <Cpu size={11} className="text-blue-400 animate-pulse" />
+          Enterprise AI Procurement Suite
+        </div>
+
+        {/* Heading & Subtitle */}
+        <div className="space-y-4 max-w-3xl">
+          <h1 className="text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight leading-[1.1] text-white">
+            Automate Quotation Auditing <br />
+            <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
+              with Decision Intelligence
             </span>
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl mx-auto font-normal">
-            Procura simplifies the B2B procurement lifecycle. AI agents extract quotation fields, validate company guidelines, rank suppliers, and maintain immutable audit timelines.
+          <p className="text-xs sm:text-sm md:text-[15px] text-slate-400 leading-relaxed max-w-2xl mx-auto font-normal">
+            AI agents extract, analyze, and validate vendor quotations.<br />
+            Ensure compliance, reduce risk, and make smarter procurement decisions.
           </p>
-
-          <div className="pt-4 flex justify-center gap-4">
-            <Button
-              onClick={handleLaunch}
-              className="text-xs font-bold py-2.5 px-6 shadow-xl shadow-primary-600/20 gap-1.5 cursor-pointer"
-            >
-              Enter Application Workspace
-              <ArrowRight size={14} />
-            </Button>
-          </div>
         </div>
 
-        {/* FEATURE LAYOUT GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 text-left">
+        {/* Action Button */}
+        <div className="pt-2">
+          <button
+            onClick={handleLaunch}
+            className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/35 hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2 mx-auto border border-blue-500/25 cursor-pointer text-xs uppercase tracking-wider"
+          >
+            Enter Application Workspace
+            <ArrowRight size={14} />
+          </button>
+        </div>
+
+        {/* Features Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-10 w-full text-left">
           
-          <div className="bg-slate-850/40 border border-slate-800/70 p-6 rounded-2xl space-y-4 hover:border-slate-700/60 transition-all backdrop-blur-sm select-none relative group">
-            <div className="h-9 w-9 bg-primary-950 border border-primary-800/60 rounded-xl flex items-center justify-center text-primary-450 shadow-inner">
-              <Cpu size={16} />
-            </div>
-            <div className="space-y-1.5">
-              <h3 className="font-bold text-xs text-white">Intelligent OCR Parser</h3>
-              <p className="text-[11px] text-slate-400 leading-relaxed font-normal">
-                Scans quotation sheets, identifies rate matrices, and parses tax structures with 96% AI confidence.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-slate-850/40 border border-slate-800/70 p-6 rounded-2xl space-y-4 hover:border-slate-700/60 transition-all backdrop-blur-sm select-none relative group">
-            <div className="h-9 w-9 bg-emerald-950 border border-emerald-900/60 rounded-xl flex items-center justify-center text-emerald-400 shadow-inner">
-              <GitCompare size={16} />
-            </div>
-            <div className="space-y-1.5">
-              <h3 className="font-bold text-xs text-white">Comparative Analytics</h3>
-              <p className="text-[11px] text-slate-400 leading-relaxed font-normal">
-                Side-by-side matrices ranking pricing models, delivery SLAs, and warranty support with radar graph visualizations.
-              </p>
+          {/* Card 1 */}
+          <div className="bg-[#050814]/60 border border-slate-900/90 hover:border-slate-800/60 p-7 rounded-2xl space-y-4 hover:bg-[#060a1d]/60 transition-all duration-300 backdrop-blur-sm shadow-xl flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="h-10 w-10 bg-blue-950/80 border border-blue-900/40 rounded-xl flex items-center justify-center text-blue-400 shadow-inner">
+                <Cpu size={18} />
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-bold text-xs text-white tracking-wide">Intelligent OCR Parser</h3>
+                <p className="text-[11px] text-slate-400 leading-relaxed font-normal">
+                  Scans quotation sheets, identifies rate matrices, and parses tax structures with 96% AI confidence.
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="bg-slate-850/40 border border-slate-800/70 p-6 rounded-2xl space-y-4 hover:border-slate-700/60 transition-all backdrop-blur-sm select-none relative group">
-            <div className="h-9 w-9 bg-purple-950 border border-purple-900/60 rounded-xl flex items-center justify-center text-purple-405 shadow-inner">
-              <ShieldCheck size={16} />
+          {/* Card 2 */}
+          <div className="bg-[#050814]/60 border border-slate-900/90 hover:border-slate-800/60 p-7 rounded-2xl space-y-4 hover:bg-[#060a1d]/60 transition-all duration-300 backdrop-blur-sm shadow-xl flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="h-10 w-10 bg-emerald-950/80 border border-emerald-900/40 rounded-xl flex items-center justify-center text-emerald-400 shadow-inner">
+                <BarChart3 size={18} />
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-bold text-xs text-white tracking-wide">Comparative Analytics</h3>
+                <p className="text-[11px] text-slate-400 leading-relaxed font-normal">
+                  Side-by-side matrices ranking pricing models, delivery SLAs, and warranty support with radar graph visualizations.
+                </p>
+              </div>
             </div>
-            <div className="space-y-1.5">
-              <h3 className="font-bold text-xs text-white">Compliance Validation</h3>
-              <p className="text-[11px] text-slate-400 leading-relaxed font-normal">
-                Automated rule checking with signature-based overrides, logs justifications directly to cryptographic ledgers.
-              </p>
+          </div>
+
+          {/* Card 3 */}
+          <div className="bg-[#050814]/60 border border-slate-900/90 hover:border-slate-800/60 p-7 rounded-2xl space-y-4 hover:bg-[#060a1d]/60 transition-all duration-300 backdrop-blur-sm shadow-xl flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="h-10 w-10 bg-purple-950/80 border border-purple-900/40 rounded-xl flex items-center justify-center text-purple-400 shadow-inner">
+                <ShieldCheck size={18} />
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-bold text-xs text-white tracking-wide">Compliance Validation</h3>
+                <p className="text-[11px] text-slate-400 leading-relaxed font-normal">
+                  Automated rule checking with signature-based overrides, logs justifications to cryptographic ledgers.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -127,13 +222,14 @@ export const LandingPage: React.FC = () => {
       </main>
 
       {/* FOOTER */}
-      <footer className="w-full max-w-7xl mx-auto px-6 py-6 border-t border-slate-800/50 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 z-10">
-        <span>© 2026 Procura Technologies Inc. All rights reserved.</span>
-        <div className="flex gap-4">
-          <a href="#" className="hover:text-slate-350">Privacy Policy</a>
-          <a href="#" className="hover:text-slate-350">Terms of Use</a>
-          <a href="#" className="hover:text-slate-350">Integrations Support</a>
+      <footer className="w-full max-w-7xl mx-auto px-6 py-8 flex flex-col items-center justify-center gap-2 z-10 border-t border-slate-900/40">
+        <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-semibold select-none">
+          <ShieldCheck size={14} className="text-emerald-450" />
+          Secure. Compliant. Auditable.
         </div>
+        <span className="text-[11px] text-slate-500 font-normal">
+          &copy; 2025 Procura. All rights reserved.
+        </span>
       </footer>
 
     </div>
