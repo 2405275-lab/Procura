@@ -49,9 +49,25 @@ export const Login: React.FC = () => {
     },
   });
 
+  React.useEffect(() => {
+    const savedEmail = localStorage.getItem('procura_remember_email');
+    const savedRemember = localStorage.getItem('procura_remember_me');
+    if (savedEmail && savedRemember === 'true') {
+      setValue('email', savedEmail);
+      setValue('rememberMe', true);
+    }
+  }, [setValue]);
+
   const onSubmit = async (data: LoginFormValues) => {
     setSubmitError(null);
     try {
+      if (data.rememberMe) {
+        localStorage.setItem('procura_remember_email', data.email);
+        localStorage.setItem('procura_remember_me', 'true');
+      } else {
+        localStorage.removeItem('procura_remember_email');
+        localStorage.removeItem('procura_remember_me');
+      }
       await login(data.email, data.rememberMe, data.role);
       navigate('/dashboard');
     } catch (err) {
