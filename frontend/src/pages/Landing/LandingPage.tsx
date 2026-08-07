@@ -114,7 +114,7 @@ export const LandingPage: React.FC = () => {
           <img 
             src="/logo.png" 
             alt="Procura AI Logo" 
-            className="h-28 sm:h-32 md:h-36 w-auto object-contain"
+            className="h-36 sm:h-48 md:h-56 w-auto object-contain transition-all duration-300 hover:scale-[1.02]" 
           />
         </div>
 
