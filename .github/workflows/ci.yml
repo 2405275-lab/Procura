@@ -31,6 +31,7 @@ jobs:
       APP_ENV: testing
       SECRET_KEY: testsecretkey
       JWT_SECRET: testjwtsecret
+      PYTHONPATH: .
 
     steps:
     - name: Checkout repository
