@@ -10,8 +10,24 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    # Setup PostgreSQL service container
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: procura_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
-      DATABASE_URL: sqlite:///procura_test.db
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/procura_test
       APP_ENV: testing
       SECRET_KEY: testsecretkey
       JWT_SECRET: testjwtsecret
@@ -46,4 +62,3 @@ jobs:
     - name: Verify production React build compiles
       run: |
         npm run build --prefix frontend
-# Trigger run 1
