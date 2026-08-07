@@ -2,6 +2,7 @@ import time
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -22,6 +23,9 @@ from backend.app.api.v1.agents import router as agents_router
 from backend.app.api.v1.notifications import router as notifications_router
 from backend.app.api.v1.dashboard import router as dashboard_router
 from backend.app.api.v1.monitoring import router as monitoring_router
+
+# Eagerly import all models to register on Base for SQLAlchemy relations
+import backend.app.models
 
 # Setup Loguru logger configs
 setup_logging()
@@ -73,12 +77,12 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     logger.warning(f"Validation failure: {exc.errors()}")
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content={
+        content=jsonable_encoder({
             "success": False,
             "message": "Validation failed",
             "error_code": "VALIDATION_ERROR",
             "errors": exc.errors()
-        }
+        })
     )
 
 @app.exception_handler(StarletteHTTPException)
