@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from backend.app.db.base import Base
+from backend.app.db.base_class import Base
 
 class Quotation(Base):
     __tablename__ = "quotations"

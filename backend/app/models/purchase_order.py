@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from backend.app.db.base import Base
+from backend.app.db.base_class import Base
 
 class PurchaseOrder(Base):
     __tablename__ = "purchase_orders"

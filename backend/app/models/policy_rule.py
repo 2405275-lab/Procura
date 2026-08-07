@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Text, Boolean
-from backend.app.db.base import Base
+from backend.app.db.base_class import Base
 
 class PolicyRule(Base):
     __tablename__ = "policy_rules"
