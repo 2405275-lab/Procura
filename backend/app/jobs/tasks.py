@@ -1,10 +1,10 @@
 import time
 from backend.app.jobs.celery import celery_app
-from backend.tests.agents.ocr.service import ocr_agent_service
-from backend.tests.agents.extraction.service import extraction_agent_service
-from backend.tests.agents.comparison.service import comparison_agent_service
-from backend.tests.agents.policy.service import policy_agent_service
-from backend.tests.agents.purchase_order.service import purchase_order_agent_service
+from backend.app.tests.agents.ocr.service import ocr_agent_service
+from backend.app.tests.agents.extraction.service import extraction_agent_service
+from backend.app.tests.agents.comparison.service import comparison_agent_service
+from backend.app.tests.agents.policy.service import policy_agent_service
+from backend.app.tests.agents.purchase_order.service import purchase_order_agent_service
 
 @celery_app.task(name="procura.process_ocr")
 def process_ocr_task(filename: str, file_bytes_hex: str) -> dict:

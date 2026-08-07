@@ -1,5 +1,5 @@
 import pytest
-from backend.tests.agents.ocr.service import ocr_agent_service
+from backend.app.tests.agents.ocr.service import ocr_agent_service
 
 def test_ocr_success():
     res = ocr_agent_service.run("quote.pdf", b"Some invoice binary data bytes")

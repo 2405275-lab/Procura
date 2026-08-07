@@ -1,5 +1,5 @@
 import time
-from backend.tests.agents.ocr.schemas import OCRResponseData
+from backend.app.tests.agents.ocr.schemas import OCRResponseData
 
 class OCRAgentService:
     def run(self, filename: str, file_bytes: bytes, retries: int = 1) -> dict:

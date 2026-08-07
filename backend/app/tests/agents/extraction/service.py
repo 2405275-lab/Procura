@@ -1,6 +1,6 @@
 import time
 import json
-from backend.tests.agents.extraction.prompts import EXTRACTION_SYSTEM_PROMPT
+from backend.app.tests.agents.extraction.prompts import EXTRACTION_SYSTEM_PROMPT
 
 class ExtractionAgentService:
     def run(self, raw_text: str, provider: str = "Gemini") -> dict:

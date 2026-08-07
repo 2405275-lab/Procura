@@ -3,13 +3,13 @@ import uuid
 from typing import Dict, Any, List
 from sqlalchemy.orm import Session
 
-from backend.tests.agents.ocr.service import ocr_agent_service
-from backend.tests.agents.extraction.service import extraction_agent_service
-from backend.tests.agents.vendor_intelligence.service import vendor_intel_service
-from backend.tests.agents.comparison.service import comparison_agent_service
-from backend.tests.agents.policy.service import policy_agent_service
-from backend.tests.agents.purchase_order.service import purchase_order_agent_service
-from backend.tests.agents.audit.service import audit_agent_service
+from backend.app.tests.agents.ocr.service import ocr_agent_service
+from backend.app.tests.agents.extraction.service import extraction_agent_service
+from backend.app.tests.agents.vendor_intelligence.service import vendor_intel_service
+from backend.app.tests.agents.comparison.service import comparison_agent_service
+from backend.app.tests.agents.policy.service import policy_agent_service
+from backend.app.tests.agents.purchase_order.service import purchase_order_agent_service
+from backend.app.tests.agents.audit.service import audit_agent_service
 
 # Global job tracker mapping job_id -> status
 JOBS_REGISTRY: Dict[str, Dict[str, Any]] = {}

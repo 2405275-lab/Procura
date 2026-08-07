@@ -1,6 +1,6 @@
 import pytest
 from backend.app.core.database import SessionLocal
-from backend.tests.agents.orchestrator.service import orchestrator_service, JOBS_REGISTRY
+from backend.app.tests.agents.orchestrator.service import orchestrator_service, JOBS_REGISTRY
 
 def test_orchestrator_pipeline():
     db = SessionLocal()

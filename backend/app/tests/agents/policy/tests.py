@@ -1,5 +1,5 @@
 import pytest
-from backend.tests.agents.policy.service import policy_agent_service
+from backend.app.tests.agents.policy.service import policy_agent_service
 
 def test_policy_compliance_pass():
     quote = {"price": 50000.0, "gst_number": "29ABCDE1234F1Z5"}
