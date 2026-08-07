@@ -137,13 +137,11 @@ export const Login: React.FC = () => {
 
         {/* Top Branding Header */}
         <div className="flex items-center gap-3 relative z-10 select-none">
-          <div className="h-8 w-8 overflow-hidden relative flex items-center justify-center rounded-lg">
-            <img 
-              src="/logo.png" 
-              alt="Procura" 
-              className="absolute max-w-none w-[68px] h-auto -top-[4px]" 
-            />
-          </div>
+          <img 
+            src="/logo_icon.png" 
+            alt="Procura" 
+            className="h-8 w-8 object-contain rounded-lg" 
+          />
           <div className="flex flex-col text-left">
             <span className="text-sm font-black tracking-widest text-white leading-none">PROCURA</span>
             <span className="text-[7.5px] text-blue-400 font-bold tracking-widest uppercase mt-1 leading-none">

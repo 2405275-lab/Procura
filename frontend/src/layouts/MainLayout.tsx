@@ -121,13 +121,11 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         {/* Sidebar Header */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="h-9 w-9 overflow-hidden relative flex items-center justify-center rounded-lg flex-shrink-0">
-              <img 
-                src="/logo.png" 
-                alt="Procura" 
-                className="absolute max-w-none w-[76px] h-auto -top-[4px]" 
-              />
-            </div>
+            <img 
+              src="/logo_icon.png" 
+              alt="Procura" 
+              className="h-9 w-9 object-contain rounded-lg flex-shrink-0" 
+            />
             {!isSidebarCollapsed && (
               <span className="font-bold text-lg text-slate-800 dark:text-slate-100 tracking-tight whitespace-nowrap">
                 Procura
@@ -231,13 +229,11 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           >
             <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 overflow-hidden relative flex items-center justify-center rounded-lg flex-shrink-0">
-                  <img 
-                    src="/logo.png" 
-                    alt="Procura" 
-                    className="absolute max-w-none w-[68px] h-auto -top-[4px]" 
-                  />
-                </div>
+                <img 
+                  src="/logo_icon.png" 
+                  alt="Procura" 
+                  className="h-8 w-8 object-contain rounded-lg flex-shrink-0" 
+                />
                 <span className="font-bold text-lg text-slate-800 dark:text-slate-100 tracking-tight">
                   Procura
                 </span>
