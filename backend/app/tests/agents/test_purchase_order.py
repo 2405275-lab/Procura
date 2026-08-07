@@ -1,5 +1,5 @@
 import pytest
-from backend.app.tests.agents.purchase_order.service import purchase_order_agent_service
+from agents.purchase_order.service import purchase_order_agent_service
 
 def test_po_generation():
     quote = {"vendor_name": "CompSource", "price": 62500.0}

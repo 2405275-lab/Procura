@@ -1,5 +1,5 @@
 import pytest
-from backend.app.tests.agents.extraction.service import extraction_agent_service
+from agents.extraction.service import extraction_agent_service
 
 def test_extraction_success():
     res = extraction_agent_service.run("GSTIN: 29ABCDE1234F1Z5\nVendor Name: CompSource Inc.")
