@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { useTheme } from '@/hooks/useTheme';
 import { cn } from '@/utils/cn';
 import {
   LayoutDashboard,
@@ -17,13 +16,12 @@ import {
   ChevronRight,
   Search,
   Bell,
-  Sun,
-  Moon,
   LogOut,
   Menu,
   X,
   BarChart3,
-  Cpu
+  Cpu,
+  User
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -56,7 +54,6 @@ const MOCK_NOTIFICATIONS = [
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
@@ -124,8 +121,12 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         {/* Sidebar Header */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="h-9 w-9 rounded-lg bg-primary-600 flex items-center justify-center flex-shrink-0 text-white font-extrabold text-lg shadow-sm shadow-primary-600/20">
-              V
+            <div className="h-9 w-9 overflow-hidden relative flex items-center justify-center rounded-lg flex-shrink-0">
+              <img 
+                src="/logo.png" 
+                alt="Procura" 
+                className="absolute max-w-none w-[76px] h-auto -top-[4px]" 
+              />
             </div>
             {!isSidebarCollapsed && (
               <span className="font-bold text-lg text-slate-800 dark:text-slate-100 tracking-tight whitespace-nowrap">
@@ -184,11 +185,9 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           {!isSidebarCollapsed ? (
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 overflow-hidden">
-                <img
-                  src={user?.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'}
-                  alt="Avatar"
-                  className="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-700 flex-shrink-0"
-                />
+                <div className="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-850 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-550 dark:text-slate-450 flex-shrink-0">
+                  <User size={14} />
+                </div>
                 <div className="overflow-hidden">
                   <h4 className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate leading-tight">
                     {user?.name}
@@ -232,8 +231,12 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           >
             <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-lg bg-primary-600 flex items-center justify-center text-white font-extrabold text-lg shadow-sm shadow-primary-600/20">
-                  V
+                <div className="h-8 w-8 overflow-hidden relative flex items-center justify-center rounded-lg flex-shrink-0">
+                  <img 
+                    src="/logo.png" 
+                    alt="Procura" 
+                    className="absolute max-w-none w-[68px] h-auto -top-[4px]" 
+                  />
                 </div>
                 <span className="font-bold text-lg text-slate-800 dark:text-slate-100 tracking-tight">
                   Procura
@@ -275,11 +278,9 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
             <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img
-                    src={user?.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'}
-                    alt="Avatar"
-                    className="h-10 w-10 rounded-full border border-slate-200 dark:border-slate-700"
-                  />
+                  <div className="h-10 w-10 rounded-full border border-slate-200 dark:border-slate-850 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-550 dark:text-slate-450 flex-shrink-0">
+                    <User size={18} />
+                  </div>
                   <div>
                     <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 leading-tight">
                       {user?.name}
@@ -337,14 +338,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
               />
             </div>
 
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-              className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 cursor-pointer transition-all active:scale-95"
-            >
-              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-            </button>
+
 
             {/* Notifications Dropdown */}
             <div className="relative">
@@ -429,11 +423,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                 }}
                 className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-800 transition-all cursor-pointer"
               >
-                <img
-                  src={user?.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'}
-                  alt="Profile"
-                  className="h-7 w-7 rounded-full border border-slate-200 dark:border-slate-700 flex-shrink-0"
-                />
+                <User size={16} className="text-slate-500 dark:text-slate-400" />
                 <span className="hidden sm:inline text-xs font-semibold text-slate-700 dark:text-slate-300">
                   {user?.name.split(' ')[0]}
                 </span>
