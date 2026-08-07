@@ -2,7 +2,7 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, BackgroundTasks
 from sqlalchemy.orm import Session
 from backend.app.core.database import get_db
-from agents.orchestrator.service import orchestrator_service, JOBS_REGISTRY
+from backend.tests.agents.orchestrator.service import orchestrator_service, JOBS_REGISTRY
 from backend.app.schemas.common import StandardResponse
 
 router = APIRouter()

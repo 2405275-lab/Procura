@@ -1,5 +1,5 @@
 import pytest
-from agents.comparison.service import comparison_agent_service
+from backend.tests.agents.comparison.service import comparison_agent_service
 
 def test_comparison_ranking():
     quotes = [

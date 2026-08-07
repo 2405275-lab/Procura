@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.orm import Session
 from backend.app.core.database import SessionLocal
-from agents.audit.service import audit_agent_service
+from backend.tests.agents.audit.service import audit_agent_service
 
 def test_audit_agent():
     db = SessionLocal()
