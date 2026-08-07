@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/utils/cn';
 import {
@@ -47,14 +47,15 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
 
 // Mock Notifications
 const MOCK_NOTIFICATIONS = [
-  { id: 1, title: 'New Quotation Uploaded', description: 'Vendor Quotation #QT-9043 was uploaded.', time: '2 mins ago', read: false },
-  { id: 2, title: 'Policy Violation Detected', description: 'Request PR-2045 budget exceeds the limit.', time: '1 hour ago', read: false },
-  { id: 3, title: 'Approval Completed', description: 'PR-2039 was approved by Director.', time: '3 hours ago', read: true },
+  { id: 1, title: 'New Quotation Uploaded', description: 'Vendor Quotation #QT-9043 was uploaded.', time: '2 mins ago', read: false, link: '/upload-quotations' },
+  { id: 2, title: 'Policy Violation Detected', description: 'Request PR-2045 budget exceeds the limit.', time: '1 hour ago', read: false, link: '/policy-validation' },
+  { id: 3, title: 'Approval Completed', description: 'PR-2039 was approved by Director.', time: '3 hours ago', read: true, link: '/approvals' },
 ];
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
     const saved = localStorage.getItem('sidebar_collapsed');
@@ -93,6 +94,12 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
 
   const handleMarkAllAsRead = () => {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
+
+  const handleNotificationClick = (id: number, link: string) => {
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+    setShowNotifications(false);
+    navigate(link);
   };
 
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -382,25 +389,26 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                           </div>
                         ) : (
                           notifications.map((n) => (
-                            <div
-                              key={n.id}
-                              className={cn(
-                                'p-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors flex flex-col gap-0.5',
-                                !n.read && 'bg-primary-50/20 dark:bg-primary-950/5'
-                              )}
-                            >
-                              <div className="flex items-center justify-between">
-                                <span className={cn('text-xs font-semibold text-slate-800 dark:text-slate-200', !n.read && 'text-primary-900 dark:text-primary-300')}>
-                                  {n.title}
-                                </span>
-                                <span className="text-[10px] text-slate-400 dark:text-slate-500">
-                                  {n.time}
-                                </span>
-                              </div>
-                              <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">
-                                {n.description}
-                              </p>
-                            </div>
+                             <button
+                               key={n.id}
+                               onClick={() => handleNotificationClick(n.id, n.link)}
+                               className={cn(
+                                 'w-full text-left p-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors flex flex-col gap-0.5 border-b border-slate-100 dark:border-slate-800/40 last:border-b-0 cursor-pointer focus:outline-none',
+                                 !n.read && 'bg-primary-50/20 dark:bg-primary-950/5'
+                               )}
+                             >
+                               <div className="flex items-center justify-between w-full">
+                                 <span className={cn('text-xs font-semibold text-slate-800 dark:text-slate-200', !n.read && 'text-primary-900 dark:text-primary-300')}>
+                                   {n.title}
+                                 </span>
+                                 <span className="text-[10px] text-slate-400 dark:text-slate-500">
+                                   {n.time}
+                                 </span>
+                               </div>
+                               <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">
+                                 {n.description}
+                               </p>
+                             </button>
                           ))
                         )}
                       </div>
