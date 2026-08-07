@@ -4,9 +4,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
-import { Shield, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import {
+  Mail,
+  User,
+  Lock,
+  ChevronDown,
+  ChevronRight,
+  ShieldCheck,
+  BarChart3,
+  Cpu,
+  Eye,
+  EyeOff,
+  AlertCircle,
+  ArrowRight
+} from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
@@ -22,7 +33,6 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [isDemoCredentialsVisible, setIsDemoCredentialsVisible] = useState(true);
 
   const {
     register,
@@ -64,201 +74,354 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
-      {/* Left side: Premium Branding Column */}
-      <div className="flex-1 hidden md:flex flex-col justify-between bg-primary-900 text-white p-12 relative overflow-hidden select-none border-r border-primary-950">
-        {/* Subtle grid background pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px]" />
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#02040d] text-slate-100 font-sans select-none overflow-x-hidden relative">
+      
+      {/* LEFT SIDE: Premium Branding Column */}
+      <div className="flex-1 hidden md:flex flex-col justify-between p-12 lg:p-16 relative overflow-hidden bg-[#04081c] border-r border-slate-900/60">
         
-        {/* Abstract vector wave background */}
-        <div className="absolute -bottom-48 -left-48 w-[600px] h-[600px] rounded-full bg-primary-800/20 blur-3xl" />
-        <div className="absolute -top-48 -right-48 w-[600px] h-[600px] rounded-full bg-primary-500/10 blur-3xl" />
+        {/* Glowing Background Wave SVG Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-950/20 via-[#04081c]/0 to-transparent pointer-events-none z-0" />
+        <svg 
+          className="absolute left-0 bottom-0 w-[550px] h-[550px] pointer-events-none z-0 opacity-40" 
+          viewBox="0 0 600 600" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path 
+            d="M-100 600 C 150 550, 100 200, 380 250 C 480 270, 500 150, 600 100" 
+            stroke="url(#brandGradient)" 
+            strokeWidth="4" 
+            strokeLinecap="round"
+            filter="url(#glowBrand)"
+          />
+          <defs>
+            <linearGradient id="brandGradient" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stopColor="#1d4ed8" stopOpacity="0" />
+              <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#0d9488" stopOpacity="0" />
+            </linearGradient>
+            <filter id="glowBrand" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="12" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+        </svg>
 
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-white flex items-center justify-center text-primary-900 font-black text-2xl shadow-lg">
-            V
+        {/* Top Branding Header */}
+        <div className="flex items-center gap-3 relative z-10 select-none">
+          <div className="h-8 w-8 overflow-hidden relative flex items-center justify-center rounded-lg">
+            <img 
+              src="/logo.png" 
+              alt="Procura" 
+              className="absolute max-w-none w-[68px] h-auto -top-[4px]" 
+            />
           </div>
-          <span className="font-bold text-2xl tracking-tight">Procura</span>
+          <div className="flex flex-col text-left">
+            <span className="text-sm font-black tracking-widest text-white leading-none">PROCURA</span>
+            <span className="text-[7.5px] text-blue-400 font-bold tracking-widest uppercase mt-1 leading-none">
+              PROCUREMENT | CONSULTING | SOLUTIONS
+            </span>
+          </div>
         </div>
 
-        <div className="relative z-10 max-w-lg my-auto space-y-6">
-          <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-white m-0 text-left">
-            Enterprise Procurement Decision Intelligence
+        {/* Main Copy Area */}
+        <div className="relative z-10 max-w-lg my-auto space-y-6 text-left">
+          <h1 className="text-4xl lg:text-[46px] font-black tracking-tight leading-[1.1] text-white">
+            Enterprise <br />
+            Procurement. <br />
+            <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
+              Smarter Decisions.
+            </span>
           </h1>
-          <p className="text-sm lg:text-base text-primary-100/80 leading-relaxed font-normal text-left">
-            Automating procurement workflows with multi-agent intelligence, policy compliance, and auditability. Achieve extreme operational efficiency with human-in-the-loop validation.
+
+          <p className="text-[13px] text-slate-400 leading-relaxed font-normal max-w-md">
+            Procura leverages multi-agent AI to automate quotation auditing, ensure policy compliance, and deliver actionable insights—empowering your organization to reduce risk, save more, and operate with confidence.
           </p>
 
-          <div className="flex items-center gap-4 bg-primary-950/40 p-4 rounded-xl border border-primary-800/40 backdrop-blur-sm">
-            <Shield className="text-primary-400 h-10 w-10 flex-shrink-0" />
-            <div className="text-left">
-              <h4 className="text-xs font-semibold text-white uppercase tracking-wider">
-                Enterprise Ready
-              </h4>
-              <p className="text-xs text-primary-200/70 mt-0.5 leading-normal">
-                Verifiable decision trails, real-time policy alerts, and cross-department manager flows.
-              </p>
+          {/* Horizontal Mini-Feature Grid */}
+          <div className="grid grid-cols-2 gap-4 pt-6">
+            {/* Feature 1 */}
+            <div className="flex items-start gap-3 bg-[#030614]/50 border border-slate-900 p-3.5 rounded-xl backdrop-blur-sm">
+              <div className="h-8 w-8 rounded-lg bg-blue-950/80 border border-blue-900/40 flex items-center justify-center text-blue-400 flex-shrink-0">
+                <ShieldCheck size={16} />
+              </div>
+              <div className="space-y-0.5 text-left">
+                <h4 className="text-[9.5px] font-bold text-white uppercase tracking-wider leading-none">Policy Compliance</h4>
+                <span className="text-[9px] text-slate-500 leading-normal block mt-1">Built-in rules and governance controls</span>
+              </div>
+            </div>
+            {/* Feature 2 */}
+            <div className="flex items-start gap-3 bg-[#030614]/50 border border-slate-900 p-3.5 rounded-xl backdrop-blur-sm">
+              <div className="h-8 w-8 rounded-lg bg-emerald-950/80 border border-emerald-900/40 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                <BarChart3 size={16} />
+              </div>
+              <div className="space-y-0.5 text-left">
+                <h4 className="text-[9.5px] font-bold text-white uppercase tracking-wider leading-none">AI-Powered Insights</h4>
+                <span className="text-[9px] text-slate-500 leading-normal block mt-1">Intelligent analysis for better decisions</span>
+              </div>
+            </div>
+            {/* Feature 3 */}
+            <div className="flex items-start gap-3 bg-[#030614]/50 border border-slate-900 p-3.5 rounded-xl backdrop-blur-sm">
+              <div className="h-8 w-8 rounded-lg bg-purple-950/80 border border-purple-900/40 flex items-center justify-center text-purple-400 flex-shrink-0">
+                <Cpu size={16} />
+              </div>
+              <div className="space-y-0.5 text-left">
+                <h4 className="text-[9.5px] font-bold text-white uppercase tracking-wider leading-none">End-to-End Visibility</h4>
+                <span className="text-[9px] text-slate-500 leading-normal block mt-1">Real-time tracking across the procurement cycle</span>
+              </div>
+            </div>
+            {/* Feature 4 */}
+            <div className="flex items-start gap-3 bg-[#030614]/50 border border-slate-900 p-3.5 rounded-xl backdrop-blur-sm">
+              <div className="h-8 w-8 rounded-lg bg-blue-950/80 border border-blue-900/40 flex items-center justify-center text-blue-400 flex-shrink-0">
+                <span className="text-xs">🔒</span>
+              </div>
+              <div className="space-y-0.5 text-left">
+                <h4 className="text-[9.5px] font-bold text-white uppercase tracking-wider leading-none">Secure & Auditable</h4>
+                <span className="text-[9px] text-slate-500 leading-normal block mt-1">Enterprise-grade security and audit trails</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="relative z-10 flex items-center justify-between text-xs text-primary-200/50">
-          <span>&copy; {new Date().getFullYear()} Procura Inc. All rights reserved.</span>
+        {/* Footer Area */}
+        <div className="relative z-10 flex items-center justify-between text-[10px] text-slate-500">
+          <span>© 2025 Procura Inc. All rights reserved.</span>
           <div className="flex gap-4">
-            <a href="#" className="hover:underline">Privacy Policy</a>
-            <a href="#" className="hover:underline">Terms of Service</a>
+            <a href="#" className="hover:text-slate-400">Privacy Policy</a>
+            <a href="#" className="hover:text-slate-400">Terms of Service</a>
           </div>
         </div>
+
       </div>
 
-      {/* Right side: Login Form Column */}
-      <div className="w-full md:w-[500px] flex flex-col justify-center px-6 py-12 md:px-16 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 transition-colors duration-200 shadow-2xl">
-        <div className="w-full max-w-sm mx-auto space-y-8">
-          <div className="space-y-2 text-left">
-            {/* Mobile Logo */}
-            <div className="flex items-center gap-2 md:hidden mb-6">
-              <div className="h-8 w-8 rounded-lg bg-primary-600 flex items-center justify-center text-white font-extrabold text-lg">
-                V
-              </div>
-              <span className="font-bold text-lg text-slate-800 dark:text-slate-100">Procura</span>
+      {/* RIGHT SIDE: Interactive Login Panel */}
+      <div className="w-full md:w-[520px] flex flex-col justify-center px-6 py-12 md:px-12 bg-[#04060f] relative z-10">
+        <div className="w-full max-w-[420px] mx-auto space-y-6 border border-slate-900/80 bg-[#060814]/40 p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
+          
+          {/* Lock Header */}
+          <div className="flex flex-col items-center text-center space-y-3">
+            <div className="h-11 w-11 rounded-full border border-blue-900/40 bg-blue-950/20 flex items-center justify-center text-blue-400 shadow-inner">
+              <span className="text-base">🔒</span>
             </div>
-            
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-              Sign In
-            </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Enter your corporate credentials to access the Procura portal.
-            </p>
+            <div className="space-y-0.5">
+              <h2 className="text-xl font-bold text-white tracking-wide">Welcome Back</h2>
+              <p className="text-xs text-slate-400">Sign in to access the Procura portal.</p>
+            </div>
           </div>
 
           {submitError && (
-            <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs dark:bg-red-950/20 dark:border-red-900/30 dark:text-red-400">
-              <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
-              <span>{submitError}</span>
+            <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-950/25 border border-red-900/30 text-red-400 text-xs">
+              <AlertCircle size={15} className="flex-shrink-0 mt-0.5" />
+              <span className="text-left">{submitError}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <Input
-              label="Corporate Email"
-              type="email"
-              placeholder="e.g. sarah.jenkins@company.com"
-              error={errors.email?.message}
-              disabled={isSubmitting}
-              {...register('email')}
-            />
-
-            <div className="space-y-1.5 text-left">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                Portal Access Role
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            
+            {/* Corporate Email Field */}
+            <div className="space-y-1.5 text-left w-full">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Corporate Email
               </label>
-              <select
-                className="w-full text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2.5 outline-none focus:border-primary-500 transition-colors cursor-pointer"
-                disabled={isSubmitting}
-                {...register('role')}
-              >
-                <option value="Procurement Officer">Procurement Officer (Employee Portal)</option>
-                <option value="Approving Manager">Approving Manager</option>
-                <option value="System Administrator">System Administrator</option>
-              </select>
-              {errors.role?.message && (
-                <p className="text-[10px] text-red-500 font-semibold mt-0.5">
-                  {errors.role.message}
-                </p>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <Mail size={15} />
+                </div>
+                <input
+                  type="email"
+                  placeholder="e.g. sarah.jenkins@company.com"
+                  disabled={isSubmitting}
+                  {...register('email')}
+                  className={`w-full text-xs pl-10 pr-3.5 py-3.5 bg-[#03050c]/85 border ${errors.email ? 'border-red-500' : 'border-slate-800/85'} text-white placeholder-slate-600 rounded-xl outline-none focus:border-blue-500 transition-colors duration-200`}
+                />
+              </div>
+              {errors.email?.message && (
+                <p className="text-[10px] text-red-500 font-semibold mt-0.5">{errors.email.message}</p>
               )}
             </div>
 
-            <div className="relative">
-              <Input
-                label="Password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="••••••••"
-                error={errors.password?.message}
-                disabled={isSubmitting}
-                {...register('password')}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-[34px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer"
-              >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
+            {/* Portal Access Role Select */}
+            <div className="space-y-1.5 text-left w-full">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Portal Access Role
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <User size={15} />
+                </div>
+                <select
+                  disabled={isSubmitting}
+                  {...register('role')}
+                  className={`w-full text-xs pl-10 pr-10 py-3.5 bg-[#03050c]/85 border ${errors.role ? 'border-red-500' : 'border-slate-800/85'} text-white rounded-xl outline-none focus:border-blue-500 transition-colors duration-200 appearance-none cursor-pointer`}
+                >
+                  <option value="Procurement Officer">Select your access role</option>
+                  <option value="Procurement Officer">Procurement Officer (Employee Portal)</option>
+                  <option value="Approving Manager">Approving Manager (Manager Portal)</option>
+                  <option value="System Administrator">System Administrator (Admin Portal)</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-500">
+                  <ChevronDown size={14} />
+                </div>
+              </div>
+              {errors.role?.message && (
+                <p className="text-[10px] text-red-500 font-semibold mt-0.5">{errors.role.message}</p>
+              )}
             </div>
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 select-none cursor-pointer">
+            {/* Password Field */}
+            <div className="space-y-1.5 text-left w-full">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <Lock size={15} />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter your password"
+                  disabled={isSubmitting}
+                  {...register('password')}
+                  className={`w-full text-xs pl-10 pr-10 py-3.5 bg-[#03050c]/85 border ${errors.password ? 'border-red-500' : 'border-slate-800/85'} text-white placeholder-slate-600 rounded-xl outline-none focus:border-blue-500 transition-colors duration-200`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 cursor-pointer focus:outline-none"
+                >
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+              {errors.password?.message && (
+                <p className="text-[10px] text-red-500 font-semibold mt-0.5">{errors.password.message}</p>
+              )}
+            </div>
+
+            {/* Remember & Forgot Row */}
+            <div className="flex items-center justify-between pt-1 select-none">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-primary-600 focus:ring-primary-500/20 cursor-pointer"
+                  className="h-4.5 w-4.5 rounded border-slate-800 bg-[#03050c] text-blue-600 focus:ring-blue-500/20 cursor-pointer"
                   {...register('rememberMe')}
                 />
-                <span className="text-xs text-slate-600 dark:text-slate-400">
-                  Remember this device
-                </span>
+                <span className="text-xs text-slate-400">Remember this device</span>
               </label>
 
               <button
                 type="button"
-                onClick={() => alert('Please contact your enterprise IT administrator or procurement manager to reset your password.')}
-                className="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-semibold cursor-pointer"
+                onClick={() => alert('Please contact your enterprise IT administrator to reset your password.')}
+                className="text-xs text-blue-400 hover:text-blue-300 font-semibold cursor-pointer focus:outline-none"
               >
                 Forgot Password?
               </button>
             </div>
 
-            <Button
-              type="submit"
-              className="w-full text-xs font-semibold py-2.5"
-              isLoading={isSubmitting}
-            >
-              Sign In to Procura
-            </Button>
+            {/* Submit Button */}
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-blue-500/15 hover:shadow-blue-500/25 transition-all duration-200 flex items-center justify-center gap-1.5 border border-blue-500/20 cursor-pointer text-xs uppercase tracking-wider"
+              >
+                {isSubmitting ? 'Signing In...' : 'Sign In to Procura'}
+                <ArrowRight size={13} />
+              </button>
+            </div>
+
           </form>
 
-          {isDemoCredentialsVisible && (
-            <div className="p-3.5 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 text-left">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-600">
-                  Demo Environment Setup
-                </span>
-                <button
-                  onClick={() => setIsDemoCredentialsVisible(false)}
-                  className="text-[10px] text-slate-400 hover:text-slate-600 dark:text-slate-600 dark:hover:text-slate-400"
-                >
-                  Hide
-                </button>
-              </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
-                Click below to auto-fill mock credentials for the three specialized user portals:
+          {/* OR Divider */}
+          <div className="flex items-center justify-center gap-3 pt-2 text-[10px] font-bold text-slate-600 uppercase tracking-widest">
+            <div className="h-px bg-slate-900 flex-1" />
+            <span>or</span>
+            <div className="h-px bg-slate-900 flex-1" />
+          </div>
+
+          {/* Try Demo Portals */}
+          <div className="space-y-3.5 text-left">
+            <div className="space-y-0.5">
+              <h4 className="text-[10px] font-black text-blue-400 uppercase tracking-widest">
+                Try the Demo Portals
+              </h4>
+              <p className="text-[10px] text-slate-500">
+                Explore Procura with pre-configured demo accounts.
               </p>
-              <div className="flex flex-col gap-2 mt-2.5">
-                <button
-                  type="button"
-                  onClick={() => fillDemoCredentials('Procurement Officer')}
-                  className="text-[11px] bg-slate-200/60 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold px-2.5 py-1.5 rounded transition-colors cursor-pointer text-left"
-                >
-                  Fill Procurement Officer (officer@procura.io)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillDemoCredentials('Approving Manager')}
-                  className="text-[11px] bg-slate-200/60 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold px-2.5 py-1.5 rounded transition-colors cursor-pointer text-left"
-                >
-                  Fill Approving Manager (manager@procura.io)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillDemoCredentials('System Administrator')}
-                  className="text-[11px] bg-slate-200/60 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold px-2.5 py-1.5 rounded transition-colors cursor-pointer text-left"
-                >
-                  Fill System Administrator (admin@procura.io)
-                </button>
-              </div>
             </div>
-          )}
+
+            {/* Demo buttons list */}
+            <div className="flex flex-col gap-2.5">
+              
+              {/* Tile 1 */}
+              <button
+                type="button"
+                onClick={() => fillDemoCredentials('Procurement Officer')}
+                className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-xl p-3 flex items-center justify-between text-left cursor-pointer group"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="h-8 w-8 rounded-lg bg-emerald-950/80 border border-emerald-900/40 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                    <User size={15} />
+                  </div>
+                  <div className="space-y-0.5">
+                    <h4 className="text-xs font-bold text-white leading-none">Procurement Officer (Employee Portal)</h4>
+                    <span className="text-[10px] text-slate-500 group-hover:text-slate-400 leading-none block">officer@procura.io</span>
+                  </div>
+                </div>
+                <ChevronRight size={14} className="text-slate-700 group-hover:text-slate-400 transition-colors" />
+              </button>
+
+              {/* Tile 2 */}
+              <button
+                type="button"
+                onClick={() => fillDemoCredentials('Approving Manager')}
+                className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-xl p-3 flex items-center justify-between text-left cursor-pointer group"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="h-8 w-8 rounded-lg bg-blue-950/80 border border-blue-900/40 flex items-center justify-center text-blue-400 flex-shrink-0">
+                    <User size={15} />
+                  </div>
+                  <div className="space-y-0.5">
+                    <h4 className="text-xs font-bold text-white leading-none">Approving Manager (Manager Portal)</h4>
+                    <span className="text-[10px] text-slate-500 group-hover:text-slate-400 leading-none block">manager@procura.io</span>
+                  </div>
+                </div>
+                <ChevronRight size={14} className="text-slate-700 group-hover:text-slate-400 transition-colors" />
+              </button>
+
+              {/* Tile 3 */}
+              <button
+                type="button"
+                onClick={() => fillDemoCredentials('System Administrator')}
+                className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-xl p-3 flex items-center justify-between text-left cursor-pointer group"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="h-8 w-8 rounded-lg bg-purple-950/80 border border-purple-900/40 flex items-center justify-center text-purple-400 flex-shrink-0">
+                    <Cpu size={15} />
+                  </div>
+                  <div className="space-y-0.5">
+                    <h4 className="text-xs font-bold text-white leading-none">System Administrator (Admin Portal)</h4>
+                    <span className="text-[10px] text-slate-500 group-hover:text-slate-400 leading-none block">admin@procura.io</span>
+                  </div>
+                </div>
+                <ChevronRight size={14} className="text-slate-700 group-hover:text-slate-400 transition-colors" />
+              </button>
+
+            </div>
+
+            {/* Bottom check shield status */}
+            <div className="flex items-center justify-center gap-1.5 text-emerald-450 text-[10px] font-semibold select-none pt-2.5">
+              <ShieldCheck size={12} className="text-emerald-450" />
+              Secure • Compliant • Auditable
+            </div>
+
+          </div>
+
         </div>
       </div>
+
     </div>
   );
 };
