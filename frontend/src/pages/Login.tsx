@@ -75,17 +75,26 @@ export const Login: React.FC = () => {
     }
   };
 
-  const fillDemoCredentials = (role: 'Procurement Officer' | 'Approving Manager' | 'System Administrator') => {
-    setValue('password', 'password123');
+  const handleDemoLogin = async (role: 'Procurement Officer' | 'Approving Manager' | 'System Administrator') => {
+    let email = '';
     if (role === 'Procurement Officer') {
-      setValue('email', 'officer@procura.io');
-      setValue('role', 'Procurement Officer');
+      email = 'officer@procura.io';
     } else if (role === 'Approving Manager') {
-      setValue('email', 'manager@procura.io');
-      setValue('role', 'Approving Manager');
+      email = 'manager@procura.io';
     } else {
-      setValue('email', 'admin@procura.io');
-      setValue('role', 'System Administrator');
+      email = 'admin@procura.io';
+    }
+
+    setValue('password', 'password123');
+    setValue('email', email);
+    setValue('role', role);
+
+    setSubmitError(null);
+    try {
+      await login(email, false, role);
+      navigate('/dashboard');
+    } catch (err) {
+      setSubmitError('Authentication failed for demo portal.');
     }
   };
 
@@ -374,7 +383,7 @@ export const Login: React.FC = () => {
               {/* Tile 1 */}
               <button
                 type="button"
-                onClick={() => fillDemoCredentials('Procurement Officer')}
+                onClick={() => handleDemoLogin('Procurement Officer')}
                 className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-lg p-2 flex items-center justify-between text-left cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5">
@@ -392,7 +401,7 @@ export const Login: React.FC = () => {
               {/* Tile 2 */}
               <button
                 type="button"
-                onClick={() => fillDemoCredentials('Approving Manager')}
+                onClick={() => handleDemoLogin('Approving Manager')}
                 className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-lg p-2 flex items-center justify-between text-left cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5">
@@ -410,7 +419,7 @@ export const Login: React.FC = () => {
               {/* Tile 3 */}
               <button
                 type="button"
-                onClick={() => fillDemoCredentials('System Administrator')}
+                onClick={() => handleDemoLogin('System Administrator')}
                 className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-lg p-2 flex items-center justify-between text-left cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5">
