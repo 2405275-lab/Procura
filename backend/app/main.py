@@ -126,6 +126,10 @@ app.include_router(monitoring_router, prefix="/api/v1/monitoring", tags=["Monito
 
 @app.on_event("startup")
 def startup_event():
+    from backend.app.db.base import Base
+    from backend.app.core.database import engine
+    logger.info("Initializing database tables...")
+    Base.metadata.create_all(bind=engine)
     logger.info("Procura Backend service is successfully initialized and listening on interface nodes.")
 
 @app.on_event("shutdown")

@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from backend.app.dependencies.auth import get_current_user
-from backend.app.db.models.user import User
+from backend.app.models.user import User
 
 PERMISSIONS_MAP = {
     "create_pr": ["Administrator", "Procurement Officer"],
