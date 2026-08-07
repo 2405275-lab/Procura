@@ -198,64 +198,64 @@ export const Login: React.FC = () => {
       </div>
 
       {/* RIGHT SIDE: Interactive Login Panel */}
-      <div className="w-full md:w-[500px] flex flex-col justify-start md:justify-center py-8 md:py-6 px-6 md:px-10 bg-[#04060f] relative z-10 h-full overflow-y-auto">
-        <div className="w-full max-w-[390px] mx-auto space-y-4 border border-slate-900/80 bg-[#060814]/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm">
+      <div className="w-full md:w-[500px] flex flex-col justify-start md:justify-center py-6 md:py-4 px-6 md:px-10 bg-[#04060f] relative z-10 h-full overflow-y-auto">
+        <div className="w-full max-w-[370px] mx-auto space-y-2.5 border border-slate-900/80 bg-[#060814]/40 p-4.5 rounded-xl shadow-2xl backdrop-blur-sm">
           
           {/* Lock Header */}
-          <div className="flex flex-col items-center text-center space-y-2">
-            <div className="h-9 w-9 rounded-full border border-blue-900/40 bg-blue-950/20 flex items-center justify-center text-blue-400 shadow-inner">
-              <span className="text-sm">🔒</span>
+          <div className="flex flex-col items-center text-center space-y-1">
+            <div className="h-8 w-8 rounded-full border border-blue-900/40 bg-blue-950/20 flex items-center justify-center text-blue-400 shadow-inner">
+              <span className="text-[11px]">🔒</span>
             </div>
             <div className="space-y-0.5">
-              <h2 className="text-lg font-bold text-white tracking-wide leading-none">Welcome Back</h2>
-              <span className="text-[11px] text-slate-400 block mt-1">Sign in to access the Procura portal.</span>
+              <h2 className="text-base font-bold text-white tracking-wide leading-none">Welcome Back</h2>
+              <span className="text-[10px] text-slate-400 block mt-0.5">Sign in to access the Procura portal.</span>
             </div>
           </div>
 
           {submitError && (
-            <div className="flex items-start gap-2 p-2.5 rounded-lg bg-red-955/25 border border-red-900/30 text-red-400 text-[11px]">
-              <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-1.5 p-2 rounded-lg bg-red-955/25 border border-red-900/30 text-red-400 text-[10px]">
+              <AlertCircle size={13} className="flex-shrink-0 mt-0.5" />
               <span className="text-left">{submitError}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-2.5">
             
             {/* Corporate Email Field */}
             <div className="space-y-1 text-left w-full">
-              <label className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+              <label className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">
                 Corporate Email
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
-                  <Mail size={14} />
+                  <Mail size={13} />
                 </div>
                 <input
                   type="email"
                   placeholder="e.g. sarah.jenkins@company.com"
                   disabled={isSubmitting}
                   {...register('email')}
-                  className={`w-full text-xs pl-9 pr-3.5 py-3 bg-[#03050c]/85 border ${errors.email ? 'border-red-500' : 'border-slate-800/85'} text-white placeholder-slate-600 rounded-xl outline-none focus:border-blue-500 transition-colors duration-200`}
+                  className={`w-full text-[11px] pl-8.5 pr-3 py-2 bg-[#03050c]/85 border ${errors.email ? 'border-red-500' : 'border-slate-800/85'} text-white placeholder-slate-650 rounded-lg outline-none focus:border-blue-500 transition-colors duration-200`}
                 />
               </div>
               {errors.email?.message && (
-                <p className="text-[9px] text-red-500 font-semibold mt-0.5">{errors.email.message}</p>
+                <p className="text-[8.5px] text-red-500 font-semibold mt-0.5">{errors.email.message}</p>
               )}
             </div>
 
             {/* Portal Access Role Select */}
             <div className="space-y-1 text-left w-full">
-              <label className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+              <label className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">
                 Portal Access Role
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
-                  <User size={14} />
+                  <User size={13} />
                 </div>
                 <select
                   disabled={isSubmitting}
                   {...register('role')}
-                  className={`w-full text-xs pl-9 pr-9 py-3 bg-[#03050c]/85 border ${errors.role ? 'border-red-500' : 'border-slate-800/85'} text-white rounded-xl outline-none focus:border-blue-500 transition-colors duration-200 appearance-none cursor-pointer`}
+                  className={`w-full text-[11px] pl-8.5 pr-8 py-2 bg-[#03050c]/85 border ${errors.role ? 'border-red-500' : 'border-slate-800/85'} text-white rounded-lg outline-none focus:border-blue-500 transition-colors duration-200 appearance-none cursor-pointer`}
                 >
                   <option value="Procurement Officer">Select your access role</option>
                   <option value="Procurement Officer">Procurement Officer (Employee Portal)</option>
@@ -263,157 +263,157 @@ export const Login: React.FC = () => {
                   <option value="System Administrator">System Administrator (Admin Portal)</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-500">
-                  <ChevronDown size={12} />
+                  <ChevronDown size={11} />
                 </div>
               </div>
               {errors.role?.message && (
-                <p className="text-[9px] text-red-500 font-semibold mt-0.5">{errors.role.message}</p>
+                <p className="text-[8.5px] text-red-500 font-semibold mt-0.5">{errors.role.message}</p>
               )}
             </div>
 
             {/* Password Field */}
             <div className="space-y-1 text-left w-full">
-              <label className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+              <label className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
-                  <Lock size={14} />
+                  <Lock size={13} />
                 </div>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your password"
                   disabled={isSubmitting}
                   {...register('password')}
-                  className={`w-full text-xs pl-9 pr-9 py-3 bg-[#03050c]/85 border ${errors.password ? 'border-red-500' : 'border-slate-800/85'} text-white placeholder-slate-600 rounded-xl outline-none focus:border-blue-500 transition-colors duration-200`}
+                  className={`w-full text-[11px] pl-8.5 pr-8 py-2 bg-[#03050c]/85 border ${errors.password ? 'border-red-500' : 'border-slate-800/85'} text-white placeholder-slate-650 rounded-lg outline-none focus:border-blue-500 transition-colors duration-200`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 cursor-pointer focus:outline-none"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 cursor-pointer focus:outline-none"
                 >
-                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                  {showPassword ? <EyeOff size={13} /> : <Eye size={13} />}
                 </button>
               </div>
               {errors.password?.message && (
-                <p className="text-[9px] text-red-500 font-semibold mt-0.5">{errors.password.message}</p>
+                <p className="text-[8.5px] text-red-500 font-semibold mt-0.5">{errors.password.message}</p>
               )}
             </div>
 
             {/* Remember & Forgot Row */}
-            <div className="flex items-center justify-between pt-0.5 select-none">
-              <label className="flex items-center gap-2 cursor-pointer">
+            <div className="flex items-center justify-between pt-0.5 select-none text-[10px]">
+              <label className="flex items-center gap-1.5 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="h-4 w-4 rounded border-slate-800 bg-[#03050c] text-blue-600 focus:ring-blue-500/20 cursor-pointer"
+                  className="h-3.5 w-3.5 rounded border-slate-800 bg-[#03050c] text-blue-600 focus:ring-blue-500/20 cursor-pointer"
                   {...register('rememberMe')}
                 />
-                <span className="text-[11px] text-slate-450">Remember this device</span>
+                <span className="text-slate-400">Remember this device</span>
               </label>
 
               <button
                 type="button"
                 onClick={() => alert('Please contact your enterprise IT administrator to reset your password.')}
-                className="text-[11px] text-blue-400 hover:text-blue-300 font-semibold cursor-pointer focus:outline-none"
+                className="text-blue-400 hover:text-blue-300 font-semibold cursor-pointer focus:outline-none"
               >
                 Forgot Password?
               </button>
             </div>
 
             {/* Submit Button */}
-            <div className="pt-1">
+            <div className="pt-0.5">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/15 hover:shadow-blue-500/25 transition-all duration-200 flex items-center justify-center gap-1.5 border border-blue-500/20 cursor-pointer text-[11px] uppercase tracking-wider"
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 px-6 rounded-lg shadow-lg shadow-blue-500/15 hover:shadow-blue-500/25 transition-all duration-200 flex items-center justify-center gap-1.5 border border-blue-500/20 cursor-pointer text-[10.5px] uppercase tracking-wider"
               >
                 {isSubmitting ? 'Signing In...' : 'Sign In to Procura'}
-                <ArrowRight size={12} />
+                <ArrowRight size={11} />
               </button>
             </div>
 
           </form>
 
           {/* OR Divider */}
-          <div className="flex items-center justify-center gap-2 pt-1 text-[9px] font-bold text-slate-650 uppercase tracking-widest">
+          <div className="flex items-center justify-center gap-2 text-[8.5px] font-bold text-slate-650 uppercase tracking-widest">
             <div className="h-px bg-slate-900/60 flex-1" />
             <span>or</span>
             <div className="h-px bg-slate-900/60 flex-1" />
           </div>
 
           {/* Try Demo Portals */}
-          <div className="space-y-2.5 text-left">
+          <div className="space-y-2 text-left">
             <div className="space-y-0.5">
-              <h4 className="text-[9.5px] font-black text-blue-450 uppercase tracking-widest">
+              <h4 className="text-[9px] font-black text-blue-450 uppercase tracking-widest leading-none">
                 Try the Demo Portals
               </h4>
-              <p className="text-[9.5px] text-slate-500">
+              <span className="text-[9px] text-slate-500 leading-none block mt-0.5">
                 Explore Procura with pre-configured demo accounts.
-              </p>
+              </span>
             </div>
 
             {/* Demo buttons list */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               
               {/* Tile 1 */}
               <button
                 type="button"
                 onClick={() => fillDemoCredentials('Procurement Officer')}
-                className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-xl p-2.5 flex items-center justify-between text-left cursor-pointer group"
+                className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-lg p-2 flex items-center justify-between text-left cursor-pointer group"
               >
-                <div className="flex items-center gap-3">
-                  <div className="h-7 w-7 rounded-lg bg-emerald-950/80 border border-emerald-900/40 flex items-center justify-center text-emerald-400 flex-shrink-0">
-                    <User size={13} />
+                <div className="flex items-center gap-2.5">
+                  <div className="h-6 w-6 rounded bg-emerald-950/80 border border-emerald-900/40 flex items-center justify-center text-emerald-450 flex-shrink-0">
+                    <User size={12} />
                   </div>
                   <div className="space-y-0.5">
-                    <h4 className="text-[11px] font-bold text-white leading-none">Procurement Officer (Employee Portal)</h4>
-                    <span className="text-[9.5px] text-slate-500 group-hover:text-slate-400 leading-none block">officer@procura.io</span>
+                    <h4 className="text-[10px] font-bold text-white leading-none">Procurement Officer (Employee Portal)</h4>
+                    <span className="text-[8.5px] text-slate-500 group-hover:text-slate-400 leading-none block mt-0.5">officer@procura.io</span>
                   </div>
                 </div>
-                <ChevronRight size={13} className="text-slate-700 group-hover:text-slate-400 transition-colors" />
+                <ChevronRight size={11} className="text-slate-750 group-hover:text-slate-450 transition-colors" />
               </button>
 
               {/* Tile 2 */}
               <button
                 type="button"
                 onClick={() => fillDemoCredentials('Approving Manager')}
-                className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-xl p-2.5 flex items-center justify-between text-left cursor-pointer group"
+                className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-lg p-2 flex items-center justify-between text-left cursor-pointer group"
               >
-                <div className="flex items-center gap-3">
-                  <div className="h-7 w-7 rounded-lg bg-blue-950/80 border border-blue-900/40 flex items-center justify-center text-blue-400 flex-shrink-0">
-                    <User size={13} />
+                <div className="flex items-center gap-2.5">
+                  <div className="h-6 w-6 rounded bg-blue-950/80 border border-blue-900/40 flex items-center justify-center text-blue-400 flex-shrink-0">
+                    <User size={12} />
                   </div>
                   <div className="space-y-0.5">
-                    <h4 className="text-[11px] font-bold text-white leading-none">Approving Manager (Manager Portal)</h4>
-                    <span className="text-[9.5px] text-slate-500 group-hover:text-slate-400 leading-none block">manager@procura.io</span>
+                    <h4 className="text-[10px] font-bold text-white leading-none">Approving Manager (Manager Portal)</h4>
+                    <span className="text-[8.5px] text-slate-500 group-hover:text-slate-400 leading-none block mt-0.5">manager@procura.io</span>
                   </div>
                 </div>
-                <ChevronRight size={13} className="text-slate-700 group-hover:text-slate-400 transition-colors" />
+                <ChevronRight size={11} className="text-slate-750 group-hover:text-slate-450 transition-colors" />
               </button>
 
               {/* Tile 3 */}
               <button
                 type="button"
                 onClick={() => fillDemoCredentials('System Administrator')}
-                className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-xl p-2.5 flex items-center justify-between text-left cursor-pointer group"
+                className="w-full bg-[#050713]/60 border border-slate-900 hover:border-slate-800 hover:bg-[#070b1e]/60 transition-all rounded-lg p-2 flex items-center justify-between text-left cursor-pointer group"
               >
-                <div className="flex items-center gap-3">
-                  <div className="h-7 w-7 rounded-lg bg-purple-950/80 border border-purple-900/40 flex items-center justify-center text-purple-400 flex-shrink-0">
-                    <Cpu size={13} />
+                <div className="flex items-center gap-2.5">
+                  <div className="h-6 w-6 rounded bg-purple-950/80 border border-purple-900/40 flex items-center justify-center text-purple-400 flex-shrink-0">
+                    <Cpu size={12} />
                   </div>
                   <div className="space-y-0.5">
-                    <h4 className="text-[11px] font-bold text-white leading-none">System Administrator (Admin Portal)</h4>
-                    <span className="text-[9.5px] text-slate-500 group-hover:text-slate-400 leading-none block">admin@procura.io</span>
+                    <h4 className="text-[10px] font-bold text-white leading-none">System Administrator (Admin Portal)</h4>
+                    <span className="text-[8.5px] text-slate-500 group-hover:text-slate-400 leading-none block mt-0.5">admin@procura.io</span>
                   </div>
                 </div>
-                <ChevronRight size={13} className="text-slate-700 group-hover:text-slate-400 transition-colors" />
+                <ChevronRight size={11} className="text-slate-750 group-hover:text-slate-450 transition-colors" />
               </button>
 
             </div>
 
             {/* Bottom check shield status */}
-            <div className="flex items-center justify-center gap-1.5 text-emerald-450 text-[9.5px] font-semibold select-none pt-1">
-              <ShieldCheck size={11} className="text-emerald-450" />
+            <div className="flex items-center justify-center gap-1.5 text-emerald-450 text-[9px] font-semibold select-none pt-0.5">
+              <ShieldCheck size={10} className="text-emerald-450" />
               Secure • Compliant • Auditable
             </div>
 
