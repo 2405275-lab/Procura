@@ -198,7 +198,7 @@ export const Login: React.FC = () => {
       </div>
 
       {/* RIGHT SIDE: Interactive Login Panel */}
-      <div className="w-full md:w-[500px] flex flex-col justify-center px-6 py-6 md:px-10 bg-[#04060f] relative z-10 h-full overflow-hidden">
+      <div className="w-full md:w-[500px] flex flex-col justify-start md:justify-center py-8 md:py-6 px-6 md:px-10 bg-[#04060f] relative z-10 h-full overflow-y-auto">
         <div className="w-full max-w-[390px] mx-auto space-y-4 border border-slate-900/80 bg-[#060814]/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm">
           
           {/* Lock Header */}
