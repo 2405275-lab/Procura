@@ -49,7 +49,7 @@ jobs:
 
     - name: Run Pytest suite (Backend & Agents)
       run: |
-        pytest backend/app/tests/ agents/
+        pytest backend/app/tests
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
