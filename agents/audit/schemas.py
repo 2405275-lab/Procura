@@ -11,4 +11,4 @@ class AgentResponse(BaseModel):
     execution_time_ms: float
     confidence: float
     data: AuditResponseData
- MuseConfig = {"from_attributes": True}
+    MuseConfig = {"from_attributes": True}
