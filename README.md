@@ -1,5 +1,7 @@
 # 🛡️ Procura: B2B Enterprise Procurement Decision Intelligence Platform
 
+🌐 **Live Vercel Demo**: [procura.vercel.app](https://procura-c8iqalowa-404-founder.vercel.app) (Policy Validation Workspace: [procura.vercel.app/policy-validation](https://procura-c8iqalowa-404-founder.vercel.app/policy-validation))
+
 Procura is a B2B Enterprise Procurement Decision Intelligence Platform designed to automate quotation auditing, validate compliance exceptions, compare vendors side-by-side, and coordinate purchase orders using an advanced multi-agent AI architecture.
 
 ---
