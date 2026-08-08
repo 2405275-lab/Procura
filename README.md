@@ -94,5 +94,10 @@ npm run dev
 
 ---
 
+## 👥 Collaborators
+- **Collaborator**: [24051688@kiit.ac.in](mailto:24051688@kiit.ac.in)
+
+---
+
 ## 📝 License
 Distributed under the MIT License. See `LICENSE` for details.
