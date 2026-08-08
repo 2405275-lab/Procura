@@ -20,8 +20,10 @@ import {
   Pin,
   X,
   Plus,
-  ChevronRight
+  ChevronRight,
+  Clock
 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import {
   ResponsiveContainer,
   RadarChart,
@@ -35,7 +37,15 @@ import { cn } from '@/utils/cn';
 export const VendorComparisonWorkspace: React.FC = () => {
   const { requests, vendors, activeRequest, addAuditLog } = useProcurement();
   const { showToast } = useToast();
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  const isExecutiveOrPM = user?.role === 'Approving Manager' || 
+                          user?.role === 'System Administrator' || 
+                          user?.role === 'Procurement Officer' ||
+                          user?.role?.toLowerCase().includes('executive') || 
+                          user?.role?.toLowerCase().includes('product') || 
+                          user?.role?.toLowerCase().includes('manager');
 
   const [pinnedVendorIds, setPinnedVendorIds] = useState<string[]>([]);
   const [showDrawer, setShowDrawer] = useState(false);
@@ -157,6 +167,15 @@ export const VendorComparisonWorkspace: React.FC = () => {
             <span className="font-bold text-primary-600 uppercase tracking-wider">{currentRequest.id}</span>
             <span className="text-slate-350 dark:text-slate-600 font-light">/</span>
             <span className="font-semibold text-slate-700 dark:text-slate-300">{currentRequest.title}</span>
+            {isExecutiveOrPM ? (
+              <Badge variant="warning" className="text-[9px] font-bold py-0.5 px-2 uppercase tracking-wider gap-1 border-amber-500/20 bg-amber-500/10 text-amber-500 rounded-md">
+                👑 Executive Insights Unlocked
+              </Badge>
+            ) : (
+              <Badge variant="neutral" className="text-[9px] font-bold py-0.5 px-2 uppercase tracking-wider rounded-md">
+                Standard View
+              </Badge>
+            )}
           </div>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-500">
@@ -381,6 +400,101 @@ export const VendorComparisonWorkspace: React.FC = () => {
                   </td>
                 ))}
               </tr>
+
+              {/* Conditional Detailed Comparison Rows (Unlocked for Executive / Product Manager Roles) */}
+              {isExecutiveOrPM && (
+                <>
+                  {/* Unit Cost Delta Row */}
+                  <tr className="hover:bg-slate-50/30 dark:hover:bg-slate-800/10 bg-primary-50/5 dark:bg-primary-950/5">
+                    <td className="p-4 font-semibold text-primary-600 dark:text-primary-400 flex items-center gap-1.5 pl-6 border-l-2 border-primary-500">
+                      <TrendingUp size={13} />
+                      Unit Cost Delta vs. Baseline
+                    </td>
+                    {sortedVendors.map((vendor) => {
+                      const deltas: Record<string, string> = {
+                        'VND-001': '+18.5% Cost Surplus (Under Budget)',
+                        'VND-003': '+12.0% Cost Surplus (Under Budget)',
+                        'VND-002': '-4.2% Deficit (Over Budget Baseline)',
+                        'VND-004': '+8.0% Cost Surplus (Under Budget)',
+                        'VND-005': '+22.1% Cost Surplus (Lowest Bid)'
+                      };
+                      return (
+                        <td key={vendor.key} className="p-4 text-center font-bold text-slate-850 dark:text-slate-200 border-l border-slate-100 dark:border-slate-800">
+                          {deltas[vendor.key] || 'N/A'}
+                        </td>
+                      );
+                    })}
+                  </tr>
+
+                  {/* Technical SLA breaches Row */}
+                  <tr className="hover:bg-slate-50/30 dark:hover:bg-slate-800/10 bg-primary-50/5 dark:bg-primary-950/5">
+                    <td className="p-4 font-semibold text-primary-600 dark:text-primary-400 flex items-center gap-1.5 pl-6 border-l-2 border-primary-500">
+                      <Clock size={13} />
+                      Historic SLA Breaches (12mo)
+                    </td>
+                    {sortedVendors.map((vendor) => {
+                      const breaches: Record<string, string> = {
+                        'VND-001': '0 Breaches logged',
+                        'VND-003': '1 minor delivery delay',
+                        'VND-002': '5 severe delays (delivery warning)',
+                        'VND-004': '2 minor transit delays',
+                        'VND-005': '12 breaches (compliance failure)'
+                      };
+                      return (
+                        <td key={vendor.key} className="p-4 text-center text-slate-700 dark:text-slate-355 border-l border-slate-100 dark:border-slate-800 font-medium">
+                          {breaches[vendor.key] || 'N/A'}
+                        </td>
+                      );
+                    })}
+                  </tr>
+
+                  {/* Financial Solvency Row */}
+                  <tr className="hover:bg-slate-50/30 dark:hover:bg-slate-800/10 bg-primary-50/5 dark:bg-primary-950/5">
+                    <td className="p-4 font-semibold text-primary-600 dark:text-primary-400 flex items-center gap-1.5 pl-6 border-l-2 border-primary-500">
+                      <Award size={13} />
+                      Fiscal Solvency Rating
+                    </td>
+                    {sortedVendors.map((vendor) => {
+                      const solvency: Record<string, { rating: string, label: string }> = {
+                        'VND-001': { rating: 'AAA', label: 'Prime stability' },
+                        'VND-003': { rating: 'AA+', label: 'High grade' },
+                        'VND-002': { rating: 'BBB-', label: 'Medium risk' },
+                        'VND-004': { rating: 'AA', label: 'High stability' },
+                        'VND-005': { rating: 'C', label: 'High solvency risk' }
+                      };
+                      const v = solvency[vendor.key] || { rating: 'N/A', label: 'N/A' };
+                      return (
+                        <td key={vendor.key} className="p-4 text-center border-l border-slate-100 dark:border-slate-800">
+                          <span className="font-bold text-slate-800 dark:text-slate-100 mr-1.5">{v.rating}</span>
+                          <span className="text-[10px] text-slate-450 font-normal">({v.label})</span>
+                        </td>
+                      );
+                    })}
+                  </tr>
+
+                  {/* Lead Time Reliability Row */}
+                  <tr className="hover:bg-slate-50/30 dark:hover:bg-slate-800/10 bg-primary-50/5 dark:bg-primary-950/5">
+                    <td className="p-4 font-semibold text-primary-600 dark:text-primary-400 flex items-center gap-1.5 pl-6 border-l-2 border-primary-500">
+                      <Truck size={13} />
+                      Transit SLA Reliability
+                    </td>
+                    {sortedVendors.map((vendor) => {
+                      const reliability: Record<string, string> = {
+                        'VND-001': '99.4% reliable',
+                        'VND-003': '98.8% reliable',
+                        'VND-002': '82.1% (unstable delivery times)',
+                        'VND-004': '95.2% reliable',
+                        'VND-005': '68.5% (unreliable delivery times)'
+                      };
+                      return (
+                        <td key={vendor.key} className="p-4 text-center text-slate-700 dark:text-slate-355 border-l border-slate-100 dark:border-slate-800 font-medium">
+                          {reliability[vendor.key] || 'N/A'}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                </>
+              )}
 
               {/* AI Overall Score Row */}
               <tr className="hover:bg-slate-50/30 dark:hover:bg-slate-800/10 bg-slate-50/20 dark:bg-slate-900/10 font-bold text-slate-900 dark:text-white">
