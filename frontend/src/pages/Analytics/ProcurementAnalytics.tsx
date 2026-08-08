@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/Badge';
 import {
   TrendingUp,
   DollarSign,
@@ -212,6 +213,42 @@ export const ProcurementAnalytics: React.FC = () => {
             <p className="text-xs text-slate-500 mt-2 leading-relaxed">
               Procura systems automatically track 100% of pipeline decisions, validating quotations and logging OCR extraction errors to maintain audit trails.
             </p>
+          </div>
+
+          {/* Recent Verification Audits sub-list */}
+          <div className="space-y-2.5 my-1">
+            <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest block select-none">
+              Recent Verification Audits
+            </span>
+            <div className="space-y-2">
+              <div className="p-2.5 rounded-lg bg-slate-50/50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-850 flex items-start justify-between gap-3 text-[11px] leading-relaxed">
+                <div className="text-left">
+                  <span className="font-bold text-slate-700 dark:text-slate-300">AU-9043</span>
+                  <p className="text-slate-500 dark:text-slate-400 mt-0.5 font-normal">
+                    Quotation policy rule *POL-001* overridden for **SysLogistics Solutions** by Sarah Jenkins.
+                  </p>
+                </div>
+                <Badge variant="warning" className="scale-90 flex-shrink-0">Overridden</Badge>
+              </div>
+              <div className="p-2.5 rounded-lg bg-slate-50/50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-850 flex items-start justify-between gap-3 text-[11px] leading-relaxed">
+                <div className="text-left">
+                  <span className="font-bold text-slate-700 dark:text-slate-300">AU-9041</span>
+                  <p className="text-slate-500 dark:text-slate-400 mt-0.5 font-normal">
+                    Bid verification checklist successfully passed for **CompSource Inc.** on request *PR-2044*.
+                  </p>
+                </div>
+                <Badge variant="success" className="scale-90 flex-shrink-0">Passed</Badge>
+              </div>
+              <div className="p-2.5 rounded-lg bg-slate-50/50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-850 flex items-start justify-between gap-3 text-[11px] leading-relaxed">
+                <div className="text-left">
+                  <span className="font-bold text-slate-700 dark:text-slate-300">AU-9038</span>
+                  <p className="text-slate-500 dark:text-slate-400 mt-0.5 font-normal">
+                    Automatic quotation invoice extraction completed by **ExtractionAgent** on request *PR-2045*.
+                  </p>
+                </div>
+                <Badge variant="neutral" className="scale-90 flex-shrink-0">Extracted</Badge>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
