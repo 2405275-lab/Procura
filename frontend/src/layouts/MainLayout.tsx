@@ -189,9 +189,13 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         <div className="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
           {!isSidebarCollapsed ? (
             <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 overflow-hidden">
-                <div className="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-850 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-550 dark:text-slate-450 flex-shrink-0">
-                  <User size={14} />
+              <Link to="/settings/profile" className="flex items-center gap-2 overflow-hidden hover:opacity-85 transition-opacity cursor-pointer text-left">
+                <div className="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-850 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-550 dark:text-slate-450 flex-shrink-0 overflow-hidden">
+                  {user?.avatar ? (
+                    <img src={user.avatar} alt="Avatar" className="h-full w-full object-cover" />
+                  ) : (
+                    <User size={14} />
+                  )}
                 </div>
                 <div className="overflow-hidden">
                   <h4 className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate leading-tight">
@@ -201,7 +205,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                     {user?.role}
                   </span>
                 </div>
-              </div>
+              </Link>
               <button
                 onClick={logout}
                 title="Log out"
@@ -280,9 +284,13 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
 
             <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full border border-slate-200 dark:border-slate-850 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-550 dark:text-slate-450 flex-shrink-0">
-                    <User size={18} />
+                <Link to="/settings/profile" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 hover:opacity-85 transition-opacity cursor-pointer text-left">
+                  <div className="h-10 w-10 rounded-full border border-slate-200 dark:border-slate-850 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-550 dark:text-slate-450 flex-shrink-0 overflow-hidden">
+                    {user?.avatar ? (
+                      <img src={user.avatar} alt="Avatar" className="h-full w-full object-cover" />
+                    ) : (
+                      <User size={18} />
+                    )}
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 leading-tight">
@@ -292,7 +300,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                       {user?.role}
                     </span>
                   </div>
-                </div>
+                </Link>
                 <button
                   onClick={logout}
                   className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all cursor-pointer"
@@ -427,7 +435,13 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                 }}
                 className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-800 transition-all cursor-pointer"
               >
-                <User size={16} className="text-slate-500 dark:text-slate-400" />
+                <div className="h-6 w-6 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 overflow-hidden flex-shrink-0">
+                  {user?.avatar ? (
+                    <img src={user.avatar} alt="Profile" className="h-full w-full object-cover" />
+                  ) : (
+                    <User size={12} />
+                  )}
+                </div>
                 <span className="hidden sm:inline text-xs font-semibold text-slate-700 dark:text-slate-300">
                   {user?.name.split(' ')[0]}
                 </span>
@@ -454,7 +468,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                       </div>
                       <div className="p-1.5 space-y-0.5">
                         <Link
-                          to="/settings"
+                          to="/settings/profile"
                           onClick={() => setShowProfileMenu(false)}
                           className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
                         >

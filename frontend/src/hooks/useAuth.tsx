@@ -12,6 +12,7 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, rememberMe: boolean, role?: string) => Promise<boolean>;
   logout: () => void;
+  updateUserProfile: (name: string, email: string, avatar?: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,19 +23,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   const [user, setUser] = useState<User | null>(() => {
-    const savedUser = localStorage.getItem('auth_user');
+    const savedUser = localStorage.getItem('auth_user') || sessionStorage.getItem('auth_user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
   const login = async (email: string, rememberMe: boolean, role: string = 'Procurement Officer'): Promise<boolean> => {
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 800));
+
+    // Load role profile if it exists
+    const savedProfilesStr = localStorage.getItem('procura_role_profiles');
+    const savedProfiles = savedProfilesStr ? JSON.parse(savedProfilesStr) : {};
+    const roleProfile = savedProfiles[role] || {};
     
     const mockUser: User = {
-      email,
-      name: email.split('@')[0].split('.').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' '),
+      email: roleProfile.email || email,
+      name: roleProfile.name || (roleProfile.name || email.split('@')[0].split('.').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')),
       role: role,
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      avatar: roleProfile.avatar || undefined,
     };
 
     setIsAuthenticated(true);
@@ -60,6 +66,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     sessionStorage.removeItem('auth_user');
   };
 
+  const updateUserProfile = (name: string, email: string, avatar?: string) => {
+    if (!user) return;
+    const updatedUser = { ...user, name, email, avatar };
+    setUser(updatedUser);
+
+    // Save to active session storage
+    if (localStorage.getItem('auth_token') === 'true') {
+      localStorage.setItem('auth_user', JSON.stringify(updatedUser));
+    }
+    if (sessionStorage.getItem('auth_token') === 'true') {
+      sessionStorage.setItem('auth_user', JSON.stringify(updatedUser));
+    }
+
+    // Also update role profiles mapping
+    const savedProfilesStr = localStorage.getItem('procura_role_profiles');
+    const savedProfiles = savedProfilesStr ? JSON.parse(savedProfilesStr) : {};
+    savedProfiles[user.role] = { name, email, avatar };
+    localStorage.setItem('procura_role_profiles', JSON.stringify(savedProfiles));
+  };
+
   // Sync token from sessionStorage/localStorage on boot
   useEffect(() => {
     const localToken = localStorage.getItem('auth_token') === 'true';
@@ -81,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );
