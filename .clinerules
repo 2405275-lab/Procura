@@ -1,0 +1,17 @@
+# Procura Coding and Agent Rules
+
+When editing this repository, adhere to the following rules:
+
+## 1. Directory Structure
+- Keep Python agents isolated inside `agents/<agent_name>/`.
+- API endpoints go under `backend/app/api/v1/`.
+- Frontend code must reside in `frontend/src/` with structured subfolders (`pages/`, `components/`, `hooks/`, `layouts/`).
+
+## 2. Coding Standards
+- **Python**: Use typing declarations, write docstrings for services, and format via PEP 8 standards. Keep database models separated in `backend/app/models/`.
+- **TypeScript & React**: Utilize strict type safety. Avoid using `any` types. Maintain components as functional components.
+
+## 3. UI/UX and Aesthetics
+- Maintain the premium dark-themed layout across all pages.
+- Ensure all interactive elements have functional actions and trigger feedback messages or toasts.
+- Verify page layouts fit within standard viewport constraints without clipping important controls.
