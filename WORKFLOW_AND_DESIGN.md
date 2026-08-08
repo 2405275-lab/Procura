@@ -20,7 +20,8 @@ graph TD
         E -->|Bidding & Quality Matrices| G[Side-by-Side Comparison Workspace]
     end
 
-    F & G -->|Role-Based Verification| H{Manager Approval Engine}
+    F -->|Role-Based Verification| H{Manager Approval Engine}
+    G -->|Role-Based Verification| H{Manager Approval Engine}
     H -->|SLA Warning / Violation Block| I[Override / Compliance Signature Modal]
     I -->|Authorized Signature Approved| J[Purchase Order Agent]
     
