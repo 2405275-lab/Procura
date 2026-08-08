@@ -8,7 +8,6 @@ import {
   CheckCircle,
   XCircle,
   AlertTriangle,
-  ChevronRight,
   Info,
   PenTool,
   X
@@ -196,8 +195,28 @@ export const PolicyValidationPage: React.FC = () => {
                           {rule.severity}
                         </Badge>
                       </td>
-                      <td className="p-4">
-                        <ChevronRight size={14} className={cn('text-slate-400 transition-transform', selectedRuleId === rule.id && 'translate-x-1 text-primary-650')} />
+                      <td className="p-4" onClick={(e) => e.stopPropagation()}>
+                        {rule.status === 'Pass' ? (
+                          <span className="text-slate-400 dark:text-slate-550 font-semibold text-[10px] uppercase">
+                            No Action
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedRuleId(rule.id);
+                              setShowOverrideModal(true);
+                            }}
+                            className={cn(
+                              "px-2.5 py-1 rounded-md font-bold text-[10px] uppercase tracking-wider transition-all cursor-pointer focus:outline-none",
+                              rule.status === 'Failed' 
+                                ? "bg-red-950/30 text-red-400 hover:bg-red-950/50 border border-red-900/35"
+                                : "bg-amber-950/30 text-amber-400 hover:bg-amber-950/50 border border-amber-900/35"
+                            )}
+                          >
+                            Override
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
