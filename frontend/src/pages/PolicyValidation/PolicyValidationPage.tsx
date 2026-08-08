@@ -10,7 +10,9 @@ import {
   AlertTriangle,
   Info,
   PenTool,
-  X
+  X,
+  Eye,
+  BookOpen
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
@@ -25,6 +27,14 @@ interface PolicyRuleEval {
   recommendation: string;
   explanation: string;
   resolution: string;
+}
+
+interface CompanyRule {
+  id: string;
+  name: string;
+  severity: 'Low' | 'Medium' | 'Critical';
+  mandate: string;
+  threshold: string;
 }
 
 const POLICY_RULES: PolicyRuleEval[] = [
@@ -74,6 +84,37 @@ const POLICY_RULES: PolicyRuleEval[] = [
   }
 ];
 
+const COMPANY_RULES_LIBRARY: CompanyRule[] = [
+  {
+    id: 'POL-001',
+    name: 'GST Number Check',
+    severity: 'Critical',
+    mandate: 'All supplier invoices must contain a validated GSTIN registered with taxation ledgers.',
+    threshold: '100% presence required.'
+  },
+  {
+    id: 'POL-002',
+    name: 'Delivery SLA Limit',
+    severity: 'Medium',
+    mandate: 'Standard goods delivery timelines should not exceed 7 business days from PO dispatch.',
+    threshold: 'Max 7-day lead SLA window.'
+  },
+  {
+    id: 'POL-003',
+    name: 'Three-Quote Minimum',
+    severity: 'Low',
+    mandate: 'Bids exceeding $10,000 require comparison across a minimum of three independent quotes.',
+    threshold: '>= 3 quotations.'
+  },
+  {
+    id: 'POL-004',
+    name: 'Price Variance Check',
+    severity: 'Low',
+    mandate: 'Individual item bid prices must remain within a 10% variance range of historical pricing.',
+    threshold: 'Max 10% catalog delta.'
+  }
+];
+
 export const PolicyValidationPage: React.FC = () => {
   const { addAuditLog } = useProcurement();
   const { showToast } = useToast();
@@ -81,6 +122,7 @@ export const PolicyValidationPage: React.FC = () => {
   const [activeRules, setActiveRules] = useState<PolicyRuleEval[]>(POLICY_RULES);
   const [selectedRuleId, setSelectedRuleId] = useState<string>('POL-001');
   const [showOverrideModal, setShowOverrideModal] = useState(false);
+  const [selectedSummaryRule, setSelectedSummaryRule] = useState<PolicyRuleEval | null>(null);
   const [overrideReason, setOverrideReason] = useState('');
   const [signatureName, setSignatureName] = useState('');
 
@@ -130,11 +172,54 @@ export const PolicyValidationPage: React.FC = () => {
         </p>
       </div>
 
-      {/* Main split dashboard panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
+      {/* Main split dashboard panel - Three Columns Restructure */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         
-        {/* LEFT PANEL - Table of Policy rules */}
-        <div className="lg:col-span-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+        {/* PANEL 1: Company Rules Library (Left Sidebar in Policy validation page) */}
+        <div className="lg:col-span-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex flex-col gap-4">
+          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-850 pb-3">
+            <BookOpen size={16} className="text-primary-500" />
+            <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+              Company Rules Library
+            </h3>
+          </div>
+          <div className="space-y-3 flex-1 overflow-y-auto max-h-[480px] pr-1">
+            {COMPANY_RULES_LIBRARY.map((rule) => (
+              <div
+                key={rule.id}
+                className="p-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-2 text-[11px] leading-relaxed"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-slate-700 dark:text-slate-300">{rule.id}</span>
+                  <Badge
+                    variant={
+                      rule.severity === 'Critical'
+                        ? 'critical'
+                        : rule.severity === 'Medium'
+                        ? 'warning'
+                        : 'neutral'
+                    }
+                    className="scale-90 origin-right"
+                  >
+                    {rule.severity}
+                  </Badge>
+                </div>
+                <h4 className="font-bold text-slate-800 dark:text-slate-200 leading-tight">
+                  {rule.name}
+                </h4>
+                <p className="text-slate-500 dark:text-slate-400 font-normal">
+                  {rule.mandate}
+                </p>
+                <div className="text-[10px] text-slate-400 font-semibold border-t border-slate-100 dark:border-slate-800/60 pt-1.5 mt-1">
+                  Threshold: <span className="text-slate-600 dark:text-slate-350">{rule.threshold}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* PANEL 2: Active Policy Evaluations (Middle Panel with table) */}
+        <div className="lg:col-span-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
           <div>
             <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
               <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
@@ -149,7 +234,7 @@ export const PolicyValidationPage: React.FC = () => {
                     <th className="p-4">Vendor</th>
                     <th className="p-4">Policy Rule</th>
                     <th className="p-4">Status</th>
-                    <th className="p-4">Severity</th>
+                    <th className="p-4">Details</th>
                     <th className="p-4">Action</th>
                   </tr>
                 </thead>
@@ -164,7 +249,7 @@ export const PolicyValidationPage: React.FC = () => {
                       )}
                     >
                       <td className="p-4 font-bold text-slate-800 dark:text-slate-200">{rule.vendor.split(' ')[0]}</td>
-                      <td className="p-4 font-medium max-w-[150px] truncate">{rule.ruleName}</td>
+                      <td className="p-4 font-medium max-w-[120px] truncate">{rule.ruleName}</td>
                       <td className="p-4">
                         <Badge
                           variant={
@@ -174,26 +259,23 @@ export const PolicyValidationPage: React.FC = () => {
                               ? 'warning'
                               : 'error'
                           }
-                          className="gap-1 items-center"
+                          className="gap-1 items-center scale-95"
                         >
-                          {rule.status === 'Pass' && <CheckCircle size={10} />}
-                          {rule.status === 'Warning' && <AlertTriangle size={10} />}
-                          {rule.status === 'Failed' && <XCircle size={10} />}
+                          {rule.status === 'Pass' && <CheckCircle size={9} />}
+                          {rule.status === 'Warning' && <AlertTriangle size={9} />}
+                          {rule.status === 'Failed' && <XCircle size={9} />}
                           {rule.status}
                         </Badge>
                       </td>
-                      <td className="p-4">
-                        <Badge
-                          variant={
-                            rule.severity === 'Critical'
-                              ? 'critical'
-                              : rule.severity === 'Medium'
-                              ? 'warning'
-                              : 'neutral'
-                          }
+                      <td className="p-4" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedSummaryRule(rule)}
+                          className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-primary-500 cursor-pointer transition-all active:scale-95"
+                          title="View evaluation summary details"
                         >
-                          {rule.severity}
-                        </Badge>
+                          <Eye size={14} />
+                        </button>
                       </td>
                       <td className="p-4" onClick={(e) => e.stopPropagation()}>
                         {rule.status === 'Pass' ? (
@@ -228,13 +310,13 @@ export const PolicyValidationPage: React.FC = () => {
           <div className="p-4 border-t border-slate-150 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 text-[10px] text-slate-400 leading-normal flex items-start gap-2">
             <Info size={14} className="text-slate-400 flex-shrink-0 mt-0.5" />
             <p>
-              Failed policies blocks ERP PO generation. A manager signature with valid override justification is required to override constraints.
+              Failed policies block PO generation. A manager override signature with justification is required to override constraints.
             </p>
           </div>
         </div>
 
-        {/* RIGHT PANEL - Policy Explanation & override options */}
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+        {/* PANEL 3: Active Evaluation Focus (Right Panel details) */}
+        <div className="lg:col-span-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
           <div className="space-y-5">
             <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
               <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest block">
@@ -248,12 +330,12 @@ export const PolicyValidationPage: React.FC = () => {
             <div className="space-y-4 text-xs font-normal">
               <div>
                 <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase mb-1">Scope & Policy Explanation</h4>
-                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{currentRule.explanation}</p>
+                <p className="text-slate-650 dark:text-slate-400 leading-relaxed">{currentRule.explanation}</p>
               </div>
 
               <div className="p-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-xl space-y-1">
                 <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[9px] uppercase tracking-wider">Failed Parameter Context</h4>
-                <p className="text-slate-800 dark:text-slate-200 font-medium leading-relaxed">{currentRule.reason}</p>
+                <p className="text-slate-800 dark:text-slate-200 font-semibold leading-relaxed">{currentRule.reason}</p>
               </div>
 
               <div>
@@ -263,16 +345,16 @@ export const PolicyValidationPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
+          <div className="pt-6 border-t border-slate-100 dark:border-slate-800 mt-6">
             {currentRule.status === 'Pass' ? (
-              <div className="p-3 bg-green-50/30 border border-green-200/50 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold text-green-750">
+              <div className="p-3 bg-green-50/30 dark:bg-green-950/15 border border-green-200/50 dark:border-green-900/30 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold text-green-750 dark:text-green-400">
                 <CheckCircle size={15} />
                 Compliance Checked & Passed
               </div>
             ) : (
               <Button
                 onClick={handleOpenOverride}
-                className="w-full text-xs font-semibold py-2 gap-1.5"
+                className="w-full text-xs font-semibold py-2.5 gap-1.5"
               >
                 <PenTool size={14} />
                 Override Policy Signature
@@ -363,6 +445,108 @@ export const PolicyValidationPage: React.FC = () => {
         )}
       </AnimatePresence>
 
+      {/* COMPLIANCE SUMMARY MODAL */}
+      <AnimatePresence>
+        {selectedSummaryRule && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedSummaryRule(null)}
+              className="fixed inset-0 z-40 bg-slate-950"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              className="fixed inset-0 m-auto z-50 w-full max-w-lg h-max bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col gap-4 text-left"
+            >
+              <div className="flex justify-between items-start border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest block">
+                      Compliance Evaluation Summary: {selectedSummaryRule.id}
+                    </span>
+                    <Badge variant={selectedSummaryRule.status === 'Pass' ? 'success' : selectedSummaryRule.status === 'Warning' ? 'warning' : 'error'}>
+                      {selectedSummaryRule.status}
+                    </Badge>
+                  </div>
+                  <h3 className="text-sm font-bold text-slate-850 dark:text-slate-200 mt-1">
+                    {selectedSummaryRule.ruleName}
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setSelectedSummaryRule(null)}
+                  className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 cursor-pointer"
+                >
+                  <X size={15} />
+                </button>
+              </div>
+
+              <div className="space-y-4 text-xs font-normal">
+                <div className="grid grid-cols-2 gap-4 bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-850">
+                  <div>
+                    <span className="text-[9px] text-slate-400 uppercase tracking-wider block">Targeted Supplier</span>
+                    <span className="font-bold text-slate-800 dark:text-slate-200">{selectedSummaryRule.vendor}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] text-slate-400 uppercase tracking-wider block">Policy Severity</span>
+                    <span className="font-bold text-slate-800 dark:text-slate-200">{selectedSummaryRule.severity}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase mb-0.5">Mandate Description</h4>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {selectedSummaryRule.explanation}
+                  </p>
+                </div>
+
+                <div className={cn(
+                  "p-3.5 border rounded-xl space-y-1",
+                  selectedSummaryRule.status === 'Pass'
+                    ? "bg-green-50/20 dark:bg-green-950/5 border-green-200/20 dark:border-green-900/20"
+                    : selectedSummaryRule.status === 'Warning'
+                    ? "bg-amber-50/20 dark:bg-amber-950/5 border-amber-200/20 dark:border-amber-900/20"
+                    : "bg-red-50/20 dark:bg-red-950/5 border-red-200/20 dark:border-red-900/20"
+                )}>
+                  <h4 className={cn(
+                    "font-bold text-[9px] uppercase tracking-wider",
+                    selectedSummaryRule.status === 'Pass'
+                      ? "text-green-600 dark:text-green-400"
+                      : selectedSummaryRule.status === 'Warning'
+                      ? "text-amber-600 dark:text-amber-400"
+                      : "text-red-600 dark:text-red-400"
+                  )}>
+                    Verification Rationale
+                  </h4>
+                  <p className="text-slate-800 dark:text-slate-200 font-semibold leading-relaxed">
+                    {selectedSummaryRule.reason}
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase mb-0.5">Recommended Resolution</h4>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {selectedSummaryRule.resolution}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                <Button
+                  onClick={() => setSelectedSummaryRule(null)}
+                  size="sm"
+                  className="text-xs py-1.5"
+                >
+                  Close Summary
+                </Button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
