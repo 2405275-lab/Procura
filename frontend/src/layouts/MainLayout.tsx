@@ -21,7 +21,8 @@ import {
   X,
   BarChart3,
   Cpu,
-  User
+  User,
+  BookOpen
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -50,6 +51,33 @@ const MOCK_NOTIFICATIONS = [
   { id: 1, title: 'New Quotation Uploaded', description: 'Vendor Quotation #QT-9043 was uploaded.', time: '2 mins ago', read: false, link: '/upload-quotations' },
   { id: 2, title: 'Policy Violation Detected', description: 'Request PR-2045 budget exceeds the limit.', time: '1 hour ago', read: false, link: '/policy-validation' },
   { id: 3, title: 'Approval Completed', description: 'PR-2039 was approved by Director.', time: '3 hours ago', read: true, link: '/approvals' },
+];
+
+const COMPANY_RULES_LIBRARY = [
+  {
+    id: 'POL-001',
+    name: 'GST Number Check',
+    severity: 'Critical',
+    mandate: 'All supplier invoices must contain a validated GSTIN registered with taxation ledgers.'
+  },
+  {
+    id: 'POL-002',
+    name: 'Delivery SLA Limit',
+    severity: 'Medium',
+    mandate: 'Standard goods delivery timelines should not exceed 7 business days from PO dispatch.'
+  },
+  {
+    id: 'POL-003',
+    name: 'Three-Quote Minimum',
+    severity: 'Low',
+    mandate: 'Bids exceeding $10,000 require comparison across a minimum of three independent quotes.'
+  },
+  {
+    id: 'POL-004',
+    name: 'Price Variance Check',
+    severity: 'Low',
+    mandate: 'Individual item bid prices must remain within a 10% variance range of historical pricing.'
+  }
 ];
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -152,35 +180,70 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           {filteredSidebarItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={cn(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group relative',
-                  isActive
-                    ? 'bg-primary-50 border-l-4 border-primary-600 text-primary-700 dark:bg-primary-950/30 dark:text-primary-400'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100'
-                )}
-              >
-                <item.icon
-                  size={18}
+              <div key={item.name} className="space-y-1">
+                <Link
+                  to={item.path}
                   className={cn(
-                    'flex-shrink-0 transition-transform group-hover:scale-105',
-                    isActive ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400 group-hover:text-slate-500'
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group relative',
+                    isActive
+                      ? 'bg-primary-50 border-l-4 border-primary-600 text-primary-700 dark:bg-primary-950/30 dark:text-primary-400'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100'
                   )}
-                />
-                {!isSidebarCollapsed && (
-                  <span className="whitespace-nowrap transition-opacity duration-200">
-                    {item.name}
-                  </span>
-                )}
-                {/* Tooltip for collapsed sidebar */}
-                {isSidebarCollapsed && (
-                  <div className="absolute left-16 scale-0 group-hover:scale-100 bg-slate-900 text-white text-xs px-2.5 py-1.5 rounded shadow-lg transition-transform origin-left whitespace-nowrap z-50 pointer-events-none">
-                    {item.name}
+                >
+                  <item.icon
+                    size={18}
+                    className={cn(
+                      'flex-shrink-0 transition-transform group-hover:scale-105',
+                      isActive ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400 group-hover:text-slate-500'
+                    )}
+                  />
+                  {!isSidebarCollapsed && (
+                    <span className="whitespace-nowrap transition-opacity duration-200">
+                      {item.name}
+                    </span>
+                  )}
+                  {/* Tooltip for collapsed sidebar */}
+                  {isSidebarCollapsed && (
+                    <div className="absolute left-16 scale-0 group-hover:scale-100 bg-slate-900 text-white text-xs px-2.5 py-1.5 rounded shadow-lg transition-transform origin-left whitespace-nowrap z-50 pointer-events-none">
+                      {item.name}
+                    </div>
+                  )}
+                </Link>
+
+                {/* Rules Library directly under Policy Validation button */}
+                {item.path === '/policy-validation' && !isSidebarCollapsed && (
+                  <div className="ml-4 mt-1.5 mb-2 pl-3 border-l border-slate-200 dark:border-slate-800 space-y-1.5 text-left">
+                    <div className="flex items-center gap-1.5 text-[9px] font-bold text-slate-450 dark:text-slate-500 uppercase tracking-widest mb-1.5 select-none">
+                      <BookOpen size={9} />
+                      <span>Company Rules Library</span>
+                    </div>
+                    {COMPANY_RULES_LIBRARY.map((rule) => (
+                      <Link
+                        key={rule.id}
+                        to={`/policy-validation?rule=${rule.id}`}
+                        className="block p-2 rounded-lg border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/20 hover:bg-primary-50/10 dark:hover:bg-primary-950/5 hover:border-primary-200/40 transition-all text-[10px] leading-relaxed"
+                      >
+                        <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-350">
+                          <span>{rule.id}</span>
+                          <span className={cn(
+                            "px-1 py-0.5 rounded-[3px] text-[7.5px] font-bold uppercase scale-90 origin-right",
+                            rule.severity === 'Critical' 
+                              ? "bg-red-500/10 text-red-500" 
+                              : rule.severity === 'Medium' 
+                              ? "bg-amber-500/10 text-amber-500" 
+                              : "bg-slate-500/10 text-slate-500"
+                          )}>
+                            {rule.severity}
+                          </span>
+                        </div>
+                        <h5 className="font-bold text-slate-800 dark:text-slate-200 truncate mt-0.5">
+                          {rule.name}
+                        </h5>
+                      </Link>
+                    ))}
                   </div>
                 )}
-              </Link>
+              </div>
             );
           })}
         </nav>
@@ -261,23 +324,55 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
               {filteredSidebarItems.map((item) => {
                 const isActive = location.pathname === item.path;
                 return (
-                  <Link
-                    key={item.name}
-                    to={item.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
-                      isActive
-                        ? 'bg-primary-50 border-l-4 border-primary-600 text-primary-700 dark:bg-primary-950/30 dark:text-primary-400'
-                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100'
+                  <div key={item.name} className="space-y-1">
+                    <Link
+                      to={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                        isActive
+                          ? 'bg-primary-50 border-l-4 border-primary-600 text-primary-700 dark:bg-primary-950/30 dark:text-primary-400'
+                          : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100'
+                      )}
+                    >
+                      <item.icon
+                        size={18}
+                        className={isActive ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400'}
+                      />
+                      <span>{item.name}</span>
+                    </Link>
+
+                    {/* Mobile rules library sub-list */}
+                    {item.path === '/policy-validation' && (
+                      <div className="ml-4 mt-1 pl-3 border-l border-slate-200 dark:border-slate-800 space-y-1.5 text-left">
+                        {COMPANY_RULES_LIBRARY.map((rule) => (
+                          <Link
+                            key={rule.id}
+                            to={`/policy-validation?rule=${rule.id}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block p-2 rounded-lg border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/20 hover:bg-primary-50/10 dark:hover:bg-primary-950/5 hover:border-primary-200/40 transition-all text-[10px] leading-relaxed"
+                          >
+                            <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-350">
+                              <span>{rule.id}</span>
+                              <span className={cn(
+                                "px-1 py-0.5 rounded-[3px] text-[7.5px] font-bold uppercase scale-90 origin-right",
+                                rule.severity === 'Critical' 
+                                  ? "bg-red-500/10 text-red-500" 
+                                  : rule.severity === 'Medium' 
+                                  ? "bg-amber-500/10 text-amber-500" 
+                                  : "bg-slate-500/10 text-slate-500"
+                              )}>
+                                {rule.severity}
+                              </span>
+                            </div>
+                            <h5 className="font-bold text-slate-800 dark:text-slate-200 truncate mt-0.5">
+                              {rule.name}
+                            </h5>
+                          </Link>
+                        ))}
+                      </div>
                     )}
-                  >
-                    <item.icon
-                      size={18}
-                      className={isActive ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400'}
-                    />
-                    <span>{item.name}</span>
-                  </Link>
+                  </div>
                 );
               })}
             </nav>

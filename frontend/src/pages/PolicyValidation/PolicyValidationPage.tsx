@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProcurement } from '@/hooks/useProcurement';
 import { useToast } from '@/components/common/Toast';
+import { useSearchParams } from 'react-router-dom';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -11,8 +12,7 @@ import {
   Info,
   PenTool,
   X,
-  Eye,
-  BookOpen
+  Eye
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
@@ -27,14 +27,6 @@ interface PolicyRuleEval {
   recommendation: string;
   explanation: string;
   resolution: string;
-}
-
-interface CompanyRule {
-  id: string;
-  name: string;
-  severity: 'Low' | 'Medium' | 'Critical';
-  mandate: string;
-  threshold: string;
 }
 
 const POLICY_RULES: PolicyRuleEval[] = [
@@ -84,40 +76,10 @@ const POLICY_RULES: PolicyRuleEval[] = [
   }
 ];
 
-const COMPANY_RULES_LIBRARY: CompanyRule[] = [
-  {
-    id: 'POL-001',
-    name: 'GST Number Check',
-    severity: 'Critical',
-    mandate: 'All supplier invoices must contain a validated GSTIN registered with taxation ledgers.',
-    threshold: '100% presence required.'
-  },
-  {
-    id: 'POL-002',
-    name: 'Delivery SLA Limit',
-    severity: 'Medium',
-    mandate: 'Standard goods delivery timelines should not exceed 7 business days from PO dispatch.',
-    threshold: 'Max 7-day lead SLA window.'
-  },
-  {
-    id: 'POL-003',
-    name: 'Three-Quote Minimum',
-    severity: 'Low',
-    mandate: 'Bids exceeding $10,000 require comparison across a minimum of three independent quotes.',
-    threshold: '>= 3 quotations.'
-  },
-  {
-    id: 'POL-004',
-    name: 'Price Variance Check',
-    severity: 'Low',
-    mandate: 'Individual item bid prices must remain within a 10% variance range of historical pricing.',
-    threshold: 'Max 10% catalog delta.'
-  }
-];
-
 export const PolicyValidationPage: React.FC = () => {
   const { addAuditLog } = useProcurement();
   const { showToast } = useToast();
+  const [searchParams] = useSearchParams();
 
   const [activeRules, setActiveRules] = useState<PolicyRuleEval[]>(POLICY_RULES);
   const [selectedRuleId, setSelectedRuleId] = useState<string>('POL-001');
@@ -125,6 +87,15 @@ export const PolicyValidationPage: React.FC = () => {
   const [selectedSummaryRule, setSelectedSummaryRule] = useState<PolicyRuleEval | null>(null);
   const [overrideReason, setOverrideReason] = useState('');
   const [signatureName, setSignatureName] = useState('');
+
+  const ruleParam = searchParams.get('rule');
+
+  // Sync selected rule from URL search query parameter (e.g. from sidebar links)
+  useEffect(() => {
+    if (ruleParam && POLICY_RULES.some(r => r.id === ruleParam)) {
+      setSelectedRuleId(ruleParam);
+    }
+  }, [ruleParam]);
 
   const currentRule = activeRules.find((r) => r.id === selectedRuleId) || activeRules[0];
 
@@ -172,54 +143,11 @@ export const PolicyValidationPage: React.FC = () => {
         </p>
       </div>
 
-      {/* Main split dashboard panel - Three Columns Restructure */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      {/* Main split dashboard panel - Restored to 2-column layout (Rules Library moved to Global Sidebar) */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
         
-        {/* PANEL 1: Company Rules Library (Left Sidebar in Policy validation page) */}
-        <div className="lg:col-span-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex flex-col gap-4">
-          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-850 pb-3">
-            <BookOpen size={16} className="text-primary-500" />
-            <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-              Company Rules Library
-            </h3>
-          </div>
-          <div className="space-y-3 flex-1 overflow-y-auto max-h-[480px] pr-1">
-            {COMPANY_RULES_LIBRARY.map((rule) => (
-              <div
-                key={rule.id}
-                className="p-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-2 text-[11px] leading-relaxed"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-slate-700 dark:text-slate-300">{rule.id}</span>
-                  <Badge
-                    variant={
-                      rule.severity === 'Critical'
-                        ? 'critical'
-                        : rule.severity === 'Medium'
-                        ? 'warning'
-                        : 'neutral'
-                    }
-                    className="scale-90 origin-right"
-                  >
-                    {rule.severity}
-                  </Badge>
-                </div>
-                <h4 className="font-bold text-slate-800 dark:text-slate-200 leading-tight">
-                  {rule.name}
-                </h4>
-                <p className="text-slate-500 dark:text-slate-400 font-normal">
-                  {rule.mandate}
-                </p>
-                <div className="text-[10px] text-slate-400 font-semibold border-t border-slate-100 dark:border-slate-800/60 pt-1.5 mt-1">
-                  Threshold: <span className="text-slate-600 dark:text-slate-350">{rule.threshold}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* PANEL 2: Active Policy Evaluations (Middle Panel with table) */}
-        <div className="lg:col-span-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+        {/* LEFT PANEL: Active Policy Evaluations (Table of rules) */}
+        <div className="lg:col-span-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
           <div>
             <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
               <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
@@ -249,7 +177,7 @@ export const PolicyValidationPage: React.FC = () => {
                       )}
                     >
                       <td className="p-4 font-bold text-slate-800 dark:text-slate-200">{rule.vendor.split(' ')[0]}</td>
-                      <td className="p-4 font-medium max-w-[120px] truncate">{rule.ruleName}</td>
+                      <td className="p-4 font-medium max-w-[150px] truncate">{rule.ruleName}</td>
                       <td className="p-4">
                         <Badge
                           variant={
@@ -315,8 +243,8 @@ export const PolicyValidationPage: React.FC = () => {
           </div>
         </div>
 
-        {/* PANEL 3: Active Evaluation Focus (Right Panel details) */}
-        <div className="lg:col-span-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+        {/* RIGHT PANEL: Active Evaluation Focus (Details and sign-off options) */}
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
           <div className="space-y-5">
             <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
               <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest block">
@@ -498,7 +426,7 @@ export const PolicyValidationPage: React.FC = () => {
 
                 <div>
                   <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase mb-0.5">Mandate Description</h4>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <p className="text-slate-650 dark:text-slate-400 leading-relaxed">
                     {selectedSummaryRule.explanation}
                   </p>
                 </div>
@@ -528,7 +456,7 @@ export const PolicyValidationPage: React.FC = () => {
 
                 <div>
                   <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase mb-0.5">Recommended Resolution</h4>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <p className="text-slate-650 dark:text-slate-400 leading-relaxed">
                     {selectedSummaryRule.resolution}
                   </p>
                 </div>

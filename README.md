@@ -58,53 +58,28 @@ procura/
 ## 🏗️ Installation & Setup
 
 ### 1. Backend Server Setup
-**Requirements**: Python 3.12+ (Strictly compatible and tested on Python 3.12.x) and PostgreSQL.
+**Requirements**: Python 3.12+ (Strictly compatible and tested on Python 3.12.x)
 
-#### A. PostgreSQL Database Setup
-Ensure you have PostgreSQL installed and configured locally:
-
-**For Linux (Ubuntu):**
+Create a virtual environment and launch the server:
 ```bash
-# 1. Install PostgreSQL and contrib packages
-sudo apt update
-sudo apt install postgresql postgresql-contrib
+# Enter backend folder
+cd backend
 
-# 2. Start the PostgreSQL service
-sudo service postgresql start
+# Create virtual environment (Python 3.12 compatible)
+python -m venv .venv
 
-# 3. Configure default 'postgres' user password to 'postgres'
-sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+# Activate virtual environment
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# 4. Create the target 'procura' database
-sudo -u postgres psql -c "CREATE DATABASE procura;"
-```
-
-**For Windows / macOS:**
-* Install PostgreSQL using the [interactive installer](https://www.postgresql.org/download/).
-* Set the port to `5432` and the `postgres` password to `postgres`.
-* Create a database named `procura`.
-
----
-
-#### B. Environment Initialization (Run from Repository Root)
-To prevent `ModuleNotFoundError` circular import issues, always run the server commands from the **root directory** of the repository using `PYTHONPATH`:
-
-```bash
-# 1. Create Python virtual environment
-python -m venv backend/.venv
-
-# 2. Activate virtual environment
-source backend/.venv/bin/activate  # On Windows: backend\.venv\Scripts\activate
-
-# 3. Upgrade pip and install dependencies
+# Upgrade pip and install Python 3.12 compatible dependencies
 python -m pip install --upgrade pip
-pip install -r backend/requirements.txt
+pip install -r requirements.txt
 
-# 4. Seed the database with mock scenarios
-PYTHONPATH=. python backend/app/scripts/seed_demo_data.py
+# Seed the local SQLite database with mock data scenarios
+python app/scripts/seed_demo_data.py
 
-# 5. Start the FastAPI backend server
-PYTHONPATH=. uvicorn backend.app.main:app --reload
+# Start FastAPI server on localhost:8000
+uvicorn app.main:app --reload
 ```
 
 ### 2. Frontend Build
