@@ -72,7 +72,7 @@ export const SecurityCenter: React.FC = () => {
 
           {/* Session timeout selection */}
           <div className="flex flex-col gap-1.5">
-            <label className="font-semibold text-slate-700 dark:text-slate-350">Idle Session Timeout Limit</label>
+            <label className="font-semibold text-slate-700 dark:text-slate-300">Idle Session Timeout Limit</label>
             <select
               value={sessionTimeout}
               onChange={(e) => {

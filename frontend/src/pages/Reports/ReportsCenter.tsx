@@ -154,7 +154,7 @@ export const ReportsCenter: React.FC = () => {
               {filteredReports.map((report) => (
                 <tr key={report.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/15">
                   <td className="p-4 font-bold text-slate-800 dark:text-slate-200">{report.id}</td>
-                  <td className="p-4 font-semibold text-slate-700 dark:text-slate-350">{report.name}</td>
+                  <td className="p-4 font-semibold text-slate-700 dark:text-slate-300">{report.name}</td>
                   <td className="p-4">{report.dept}</td>
                   <td className="p-4 text-slate-500">{report.date}</td>
                   <td className="p-4 font-bold">${report.amount.toLocaleString()}</td>

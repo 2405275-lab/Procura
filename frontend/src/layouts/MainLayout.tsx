@@ -223,7 +223,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                         to={`/policy-validation?rule=${rule.id}`}
                         className="block p-2 rounded-lg border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/20 hover:bg-primary-50/10 dark:hover:bg-primary-950/5 hover:border-primary-200/40 transition-all text-[10px] leading-relaxed"
                       >
-                        <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-350">
+                        <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
                           <span>{rule.id}</span>
                           <span className={cn(
                             "px-1 py-0.5 rounded-[3px] text-[7.5px] font-bold uppercase scale-90 origin-right",
@@ -352,7 +352,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="block p-2 rounded-lg border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/20 hover:bg-primary-50/10 dark:hover:bg-primary-950/5 hover:border-primary-200/40 transition-all text-[10px] leading-relaxed"
                           >
-                            <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-350">
+                            <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
                               <span>{rule.id}</span>
                               <span className={cn(
                                 "px-1 py-0.5 rounded-[3px] text-[7.5px] font-bold uppercase scale-90 origin-right",

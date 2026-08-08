@@ -104,7 +104,7 @@ export const UserManagement: React.FC = () => {
                           <span className="text-[10px] text-slate-400 font-medium">{user.email}</span>
                         </div>
                       </td>
-                      <td className="p-4 font-semibold text-slate-700 dark:text-slate-350">{user.role}</td>
+                      <td className="p-4 font-semibold text-slate-700 dark:text-slate-300">{user.role}</td>
                       <td className="p-4">{user.department}</td>
                       <td className="p-4">
                         <Badge variant={user.status === 'Active' ? 'success' : 'neutral'}>
@@ -155,7 +155,7 @@ export const UserManagement: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-1.5 text-xs">
-            <label className="font-semibold text-slate-700 dark:text-slate-350">Selected Role Access</label>
+            <label className="font-semibold text-slate-700 dark:text-slate-300">Selected Role Access</label>
             <select
               value={selectedRoleIndex}
               onChange={(e) => setSelectedRoleIndex(Number(e.target.value))}

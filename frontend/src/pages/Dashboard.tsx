@@ -579,7 +579,7 @@ export const Dashboard: React.FC = () => {
                       {selectedKpiData.rows.map((row, rowIdx) => (
                         <tr key={rowIdx} className="hover:bg-slate-50/40 dark:hover:bg-slate-900/10">
                           {row.map((val, cellIdx) => (
-                            <td key={cellIdx} className="p-3 text-slate-700 dark:text-slate-350 font-medium">
+                            <td key={cellIdx} className="p-3 text-slate-700 dark:text-slate-300 font-medium">
                               {val.includes('$') || val.includes('%') || val.includes('PR-') || val.includes('POL-') ? (
                                 <span className="font-semibold text-slate-900 dark:text-slate-100">{val}</span>
                               ) : (

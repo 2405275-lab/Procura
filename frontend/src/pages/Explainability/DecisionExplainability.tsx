@@ -127,7 +127,7 @@ export const DecisionExplainability: React.FC = () => {
           <div className="space-y-4">
             {WEIGHTS.map((weight, idx) => (
               <div key={idx} className="space-y-1 text-xs">
-                <div className="flex justify-between font-bold text-slate-700 dark:text-slate-350">
+                <div className="flex justify-between font-bold text-slate-700 dark:text-slate-300">
                   <span>{weight.name}</span>
                   <span>{weight.weight}%</span>
                 </div>

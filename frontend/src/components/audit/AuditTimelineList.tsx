@@ -57,7 +57,7 @@ export const AuditTimelineList: React.FC = () => {
           />
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-350">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
               Agent Filter
             </label>
             <select
@@ -74,7 +74,7 @@ export const AuditTimelineList: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-350">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
               Fulfillment Status
             </label>
             <select
@@ -142,7 +142,7 @@ export const AuditTimelineList: React.FC = () => {
                     
                     <div className="space-y-1 md:col-span-2">
                       <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Reason / Details</span>
-                      <p className="text-slate-650 dark:text-slate-350 font-normal leading-relaxed">{log.reason}</p>
+                      <p className="text-slate-650 dark:text-slate-300 font-normal leading-relaxed">{log.reason}</p>
                     </div>
 
                     <div className="space-y-3 md:border-l md:border-slate-100 dark:md:border-slate-850 md:pl-4">

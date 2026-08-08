@@ -106,7 +106,7 @@ export const AIMonitoring: React.FC = () => {
             { name: 'Audit Ledger Agent', desc: 'healthy' }
           ].map((agent, idx) => (
             <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-xl space-y-2">
-              <span className="text-slate-700 dark:text-slate-350 font-bold block">{agent.name}</span>
+              <span className="text-slate-700 dark:text-slate-300 font-bold block">{agent.name}</span>
               <Badge variant="success" className="text-[8px] py-0 font-bold gap-0.5">
                 <CheckCircle size={8} /> Active Healthy
               </Badge>

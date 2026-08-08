@@ -46,7 +46,7 @@ export const ActivityCenter: React.FC = () => {
         />
 
         <div className="flex flex-col gap-1.5 text-xs">
-          <label className="font-semibold text-slate-700 dark:text-slate-350">Filter by Department</label>
+          <label className="font-semibold text-slate-700 dark:text-slate-300">Filter by Department</label>
           <select
             value={filterDept}
             onChange={(e) => setFilterDept(e.target.value)}
@@ -87,11 +87,11 @@ export const ActivityCenter: React.FC = () => {
                   </div>
                   <p className="text-slate-600 dark:text-slate-450 leading-relaxed font-normal">{log.reason}</p>
                   <div className="flex items-center gap-2 pt-1">
-                    <span className="text-[9px] text-slate-400">Actor: <strong className="text-slate-700 dark:text-slate-350">{log.agent}</strong></span>
+                    <span className="text-[9px] text-slate-400">Actor: <strong className="text-slate-700 dark:text-slate-300">{log.agent}</strong></span>
                     {log.requestId && (
                       <>
                         <span className="text-slate-300">|</span>
-                        <span className="text-[9px] text-slate-400">Reference: <strong className="text-slate-700 dark:text-slate-350">{log.requestId}</strong></span>
+                        <span className="text-[9px] text-slate-400">Reference: <strong className="text-slate-700 dark:text-slate-300">{log.requestId}</strong></span>
                       </>
                     )}
                   </div>

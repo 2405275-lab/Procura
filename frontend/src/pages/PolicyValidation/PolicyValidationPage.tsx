@@ -268,7 +268,7 @@ export const PolicyValidationPage: React.FC = () => {
 
               <div>
                 <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase mb-1">Recommended Resolution</h4>
-                <p className="text-slate-650 dark:text-slate-350 leading-relaxed">{currentRule.resolution}</p>
+                <p className="text-slate-650 dark:text-slate-300 leading-relaxed">{currentRule.resolution}</p>
               </div>
             </div>
           </div>
@@ -328,7 +328,7 @@ export const PolicyValidationPage: React.FC = () => {
 
               <form onSubmit={handleApplyOverride} className="space-y-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-350">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                     Override Justification Remarks
                   </label>
                   <textarea

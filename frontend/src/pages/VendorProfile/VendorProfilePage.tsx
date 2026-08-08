@@ -90,11 +90,11 @@ export const VendorProfilePage: React.FC = () => {
             </div>
             
             <div className="flex items-center gap-4 text-xs font-semibold">
-              <span className="flex items-center gap-1.5 text-slate-650 dark:text-slate-350">
+              <span className="flex items-center gap-1.5 text-slate-650 dark:text-slate-300">
                 <Star size={14} className="text-amber-500 fill-amber-500" />
                 {currentVendor.rating} Rating
               </span>
-              <span className="flex items-center gap-1.5 text-slate-650 dark:text-slate-350">
+              <span className="flex items-center gap-1.5 text-slate-650 dark:text-slate-300">
                 <ShieldAlert size={14} className={currentVendor.riskLevel === 'High' ? 'text-red-500' : 'text-slate-400'} />
                 {currentVendor.riskLevel} Risk Profile
               </span>

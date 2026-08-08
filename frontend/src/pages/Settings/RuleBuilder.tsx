@@ -79,7 +79,7 @@ export const RuleBuilder: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-slate-700 dark:text-slate-350">If Field Target</label>
+              <label className="text-slate-700 dark:text-slate-300">If Field Target</label>
               <select
                 value={field}
                 onChange={(e) => setField(e.target.value)}
@@ -93,7 +93,7 @@ export const RuleBuilder: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-slate-700 dark:text-slate-350">Logical Condition</label>
+              <label className="text-slate-700 dark:text-slate-300">Logical Condition</label>
               <select
                 value={operator}
                 onChange={(e) => setOperator(e.target.value)}
@@ -115,7 +115,7 @@ export const RuleBuilder: React.FC = () => {
             />
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-slate-700 dark:text-slate-350">Trigger Consequence</label>
+              <label className="text-slate-700 dark:text-slate-300">Trigger Consequence</label>
               <select
                 value={action}
                 onChange={(e) => setAction(e.target.value)}

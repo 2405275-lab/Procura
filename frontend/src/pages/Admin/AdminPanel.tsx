@@ -135,7 +135,7 @@ export const AdminPanel: React.FC = () => {
                   className="text-xs"
                 />
                 <div className="flex flex-col gap-1.5 text-xs">
-                  <label className="font-semibold text-slate-700 dark:text-slate-350">Company Base Currency</label>
+                  <label className="font-semibold text-slate-700 dark:text-slate-300">Company Base Currency</label>
                   <select
                     value={orgData.currency}
                     onChange={(e) => setOrgData({ ...orgData, currency: e.target.value })}

@@ -441,7 +441,7 @@ export const VendorComparisonWorkspace: React.FC = () => {
                         'VND-005': '12 breaches (compliance failure)'
                       };
                       return (
-                        <td key={vendor.key} className="p-4 text-center text-slate-700 dark:text-slate-355 border-l border-slate-100 dark:border-slate-800 font-medium">
+                        <td key={vendor.key} className="p-4 text-center text-slate-700 dark:text-slate-300 border-l border-slate-100 dark:border-slate-800 font-medium">
                           {breaches[vendor.key] || 'N/A'}
                         </td>
                       );
@@ -487,7 +487,7 @@ export const VendorComparisonWorkspace: React.FC = () => {
                         'VND-005': '68.5% (unreliable delivery times)'
                       };
                       return (
-                        <td key={vendor.key} className="p-4 text-center text-slate-700 dark:text-slate-355 border-l border-slate-100 dark:border-slate-800 font-medium">
+                        <td key={vendor.key} className="p-4 text-center text-slate-700 dark:text-slate-300 border-l border-slate-100 dark:border-slate-800 font-medium">
                           {reliability[vendor.key] || 'N/A'}
                         </td>
                       );
