@@ -58,22 +58,27 @@ procura/
 ## 🏗️ Installation & Setup
 
 ### 1. Backend Server Setup
-Ensure python is installed and create a virtual environment:
+**Requirements**: Python 3.12+ (Strictly compatible and tested on Python 3.12.x)
+
+Create a virtual environment and launch the server:
 ```bash
 # Enter backend folder
 cd backend
 
-# Create virtual environment
+# Create virtual environment (Python 3.12 compatible)
 python -m venv .venv
+
+# Activate virtual environment
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Install dependencies
+# Upgrade pip and install Python 3.12 compatible dependencies
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 
-# Run database seeder to populate mock scenarios dataset
+# Seed the local SQLite database with mock data scenarios
 python app/scripts/seed_demo_data.py
 
-# Start FastAPI local node
+# Start FastAPI server on localhost:8000
 uvicorn app.main:app --reload
 ```
 
