@@ -1,102 +1,92 @@
-# Procura Platform Workflow & High-Level Design Documentation
+# Procura: Workflow, Architecture, and Product Requirements (PRD)
 
-This document provides a comprehensive overview of Procura's enterprise workflow pipeline, technological stack components, data models, and high-level design specifications.
+This document provides a comprehensive blueprint of Procura's enterprise decision intelligence pipeline, system architecture, technology stack, high-level designs, and product specifications.
 
 ---
 
-## 1. System Workflow Chart
+## 1. Complete Workflow Chart
 
-The diagram below outlines the sequential quotation processing lifecycle as it passes through the multi-agent AI pipeline to final ERP PO synchronization.
+The following Mermaid diagram outlines the end-to-end workflow from invoice quotation upload to final ERP PO synchronization:
 
 ```mermaid
 graph TD
-    A[Requisition Officer Uploads Quote] --> B[OCR Scanning Agent]
-    B -->|Raw Text Buffers| C[Extraction Agent]
-    C -->|Structured JSON Attributes| D[Compliance Policy Agent]
-    C -->|Structured JSON Attributes| E[Vendor Intelligence Agent]
+    A[Quotation Upload .pdf/.jpg] -->|Raw Binary Stream| B[Document OCR Agent]
+    B -->|Raw Text Buffer| C[Structured Parameter Extraction Agent]
+    C -->|Structured JSON Payload| D[Compliance Policy Agent]
+    C -->|Structured JSON Payload| E[Vendor Intelligence Agent]
     
-    D -->|Validate GSTIN & SLA Limits| F{Policy Exception Logs}
-    E -->|Calculate Scorecards & Ratings| G[Side-by-Side Comparison Workspace]
+    subgraph Validation & Audits
+        D -->|GST, Lead Time, Quotation Checks| F[Compliance Exception Logger]
+        E -->|Bidding & Quality Matrices| G[Side-by-Side Comparison Workspace]
+    end
+
+    F & G -->|Role-Based Verification| H{Manager Approval Engine}
+    H -->|SLA Warning / Violation Block| I[Override / Compliance Signature Modal]
+    I -->|Authorized Signature Approved| J[Purchase Order Agent]
     
-    F -->|Critical Failed / Warnings| H[Director Override Signature Form]
-    F -->|Pass| I[Direct PO Sign-off Approval]
-    H -->|Authorised override| I
-    
-    I --> J[Purchase Order Generation Agent]
-    J -->|Format PO XML / ASCII| K[ERP Synchronisation SAP System]
+    subgraph Enterprise ERP Sync
+        J -->|ERP Payload Generator| K[SAP / Oracle ERP PO Synchronization]
+    end
 ```
 
----
-
-## 2. Pipeline Workflow Explanation
-
-1. **Quotation Ingestion**: The procurement workflow starts when a procurement officer uploads quotation files (PDF/PNG invoices or bids) for an active purchase request.
-2. **AI OCR Parsing**: The `OCRAgent` receives the files and uses layout-aware optical character recognition to extract unstructured text segments.
-3. **Structured Extraction**: The `ExtractionAgent` processes raw text buffers to isolate parameters (supplier metadata, pricing items, tax IDs, warranty dates, and delivery lead times).
-4. **Cooperative Validation**:
-   - The **Policy Agent** evaluates these parameters against company regulations (POL-001 through POL-004), checking GST database registration and delivery SLA compliance.
-   - The **Vendor Intelligence Agent** measures the pricing against historical averages to compile vendor rating metrics.
-5. **Human-in-the-Loop Override**: Any policy violations trigger immediate exception flags. Authorized managers can enter justification remarks and supply digital signatures to override constraints.
-6. **ERP Integration**: Once compliance check-offs are complete, the `POAgent` generates formal purchase orders and synchronizes records directly with ERP endpoints (e.g. SAP/Oracle databases).
+### Workflow Explanation
+1. **Document Ingestion**: Requisitioners upload raw quotation images or PDFs.
+2. **OCR Parsing**: The `OCRAgentService` processes the documents and extracts unformatted text blocks.
+3. **Extraction & Normalization**: The `ExtractionAgentService` parses the raw text into a normalized JSON structure containing prices, warranties, delivery times, and GST numbers.
+4. **Policy Verification**: The `PolicyAgent` checks the extracted terms against active corporate guidelines (e.g., POL-001 for GSTIN validity). If a rule fails, the workflow is blocked until an authorized manager overrides it.
+5. **Vendor Intel**: Side-by-side comparison matrices analyze the quotes against historical pricing to calculate estimated savings.
+6. **Decision & ERP Sync**: Authorized officers override warnings with signatures. Once cleared, the `POAgent` syncs the approved orders into SAP/Oracle ERP databases.
 
 ---
 
-## 3. Technology Code Stack
+## 2. Technology Stack Explanation
 
-| Tech Layer | Framework / Library | Role & Functionality |
+| Component | Technology | Rationale |
 |---|---|---|
-| **Frontend** | React 18, TypeScript, Vite | Dynamic, single-page application framework. |
-| **Styling** | Vanilla CSS, TailwindCSS | Curated responsive styling and dark mode templates. |
-| **Animations** | Framer Motion | Smooth dashboard transitions and modal popovers. |
-| **Charts** | Recharts | Render monthly spend trends and vendor radar data. |
-| **Icons** | Lucide React | Modern visual interface iconography. |
-| **Backend** | Python 3.12, FastAPI | Core routing, schema validation, and API controllers. |
-| **Server** | Uvicorn | High-performance ASGI web server interface. |
-| **Database** | SQLAlchemy 2.0, SQLite / PostgreSQL | Object Relational Mapping (ORM) and connection pools. |
-| **CI / CD** | GitHub Actions | Automated tests execution and compiler checks pipeline. |
+| **Frontend** | React 18, TypeScript | Modular, type-safe development ensuring robust state management. |
+| **Styling** | Vanilla CSS, TailwindCSS | Highly flexible responsive layout framework matching enterprise dashboards. |
+| **Visualizations** | Recharts | Renders interactive area trends, pie distribution metrics, and vendor SLA charts. |
+| **Icons** | Lucide React | High-density vector icons providing clean system indicators. |
+| **Backend** | Python 3.12, FastAPI | Extremely performant, lightweight, and type-safe ASGI REST framework. |
+| **Database** | SQLAlchemy 2.0 ORM | Maps relational entities to local SQLite and production PostgreSQL instances. |
 
 ---
 
-## 4. High-Level Design (HLD)
+## 3. High-Level Design (HLD)
 
-### Database Schemas
+Procura uses a multi-agent architectural model where each micro-agent maintains independent input/output boundaries to process quotations:
 
-1. **Requisitions (`PURCHASE_REQUESTS`)**:
-   - `id` (String, Primary Key)
-   - `title` (String, Requisition item description)
-   - `budget` (Float, Maximum ceiling)
-   - `priority` (String, Critical / High / Medium / Low)
-   - `status` (String, Open / Under Review / Approved / Rejected)
-2. **Quotations (`QUOTATIONS`)**:
-   - `id` (String, Primary Key)
-   - `request_id` (String, Foreign Key)
-   - `vendor_name` (String, Supplier name)
-   - `price` (Float, Quoted cost)
-   - `warranty` (String, Warranty years support)
-   - `delivery_days` (Integer, Lead time SLA)
-3. **Audit Ledger (`AUDIT_LOGS`)**:
-   - `id` (String, Primary Key)
-   - `timestamp` (DateTime, Log timestamp)
-   - `agent` (String, Action initiator)
-   - `action` (String, Task performed)
-   - `reason` (String, Override justification remarks)
-
-### Core Folder Structure
-
+### Database Entity Model
 ```text
-procura/
-├── .github/workflows/   # CI/CD pipelines (ci.yml)
-├── agents/              # Multi-agent services source
-│   ├── ocr/             # OCR parser services
-│   ├── extraction/      # Attribute extraction services
-│   └── policy/          # Compliance validation checks
-├── backend/
-│   ├── app/
-│   │   ├── api/         # FastAPI endpoints and route handlers
-│   │   ├── models/      # SQLAlchemy ORM models
-│   │   └── tests/       # Pytest backend test suite
-└── frontend/
-    ├── src/
-    │   ├── layouts/     # Global layout components (MainLayout.tsx)
-    │   └── pages/       # Workspace routes (Dashboard, PolicyValidation)
+  [Purchase Requests] ───1:N─── [Quotations]
+           │
+           └───1:1─── [Purchase Orders] ───1:1─── [Audit Logs]
 ```
+
+### Role-Based Access Controls (RBAC)
+- **Procurement Officer (Product Manager)**: Manages purchase requests, uploads quotes, and reviews vendor comparisons.
+- **Approving Manager (Executive Officer)**: Inspects compliance exceptions and applies override signatures to bypass blocks.
+- **System Administrator**: Full system control, log monitoring, and database management.
+
+---
+
+## 4. Product Requirements Document (PRD) & User Stories
+
+### Target User Personas
+1. **Sarah (Procurement Officer)**: Needs to quickly extract quotation data from supplier PDFs to generate comparison sheets without manual typing.
+2. **Robert (Approving Manager)**: Needs to review policy warnings and sign off on exceptions from his mobile device.
+
+### User Stories
+- **User Story 1**: As a Procurement Officer, I want the system to parse invoice items automatically using OCR so that I do not have to manually input data.
+- **User Story 2**: As an Approving Manager, I want to see a clear compliance summary modal when an invoice checks fail so that I can make an informed override decision.
+- **User Story 3**: As an Executive Officer, I want to compare vendor creditworthiness, cost deltas, and SLA reliabilities side-by-side in a secure matrix view.
+
+---
+
+## 5. Tagged Release Details
+
+- **Current Release**: `v1.1.0` (Production Stable)
+- **Release Highlights**:
+  - Global Company Rules Library integration inside the left sidebar.
+  - Interactive KPI cards with slide-in breakdown modals.
+  - Role-based detailed comparison matrices for Executive Officers.
