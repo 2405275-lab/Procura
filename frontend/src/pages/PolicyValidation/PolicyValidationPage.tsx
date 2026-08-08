@@ -22,7 +22,7 @@ interface PolicyRuleEval {
   vendor: string;
   ruleName: string;
   status: 'Pass' | 'Warning' | 'Failed';
-  severity: 'Low' | 'Medium' | 'Critical';
+  severity: 'Low' | 'Medium' | 'High' | 'Critical';
   reason: string;
   recommendation: string;
   explanation: string;
@@ -72,6 +72,50 @@ const POLICY_RULES: PolicyRuleEval[] = [
     reason: 'Bid price variance is within 10% range.',
     recommendation: 'Ready to proceed.',
     explanation: 'Ensures that individual vendor pricing remains aligned with department expectations and historical budget ceilings.',
+    resolution: 'Rule passed. No action needed.'
+  },
+  {
+    id: 'POL-005',
+    vendor: 'SysLogistics Solutions',
+    ruleName: 'Banned Vendor Screening Check',
+    status: 'Failed',
+    severity: 'Critical',
+    reason: 'Vendor failed sanction check due to incomplete OFAC compliance log.',
+    recommendation: 'Contact compliance team to refresh vendor registry verification.',
+    explanation: 'All supplier quotations must be screened against OFAC sanction registers prior to PO contract approval.',
+    resolution: 'Apply compliance department sanction clearance override or cancel bidding request.'
+  },
+  {
+    id: 'POL-006',
+    vendor: 'Office Depot',
+    ruleName: 'Sustainability Certification Check',
+    status: 'Pass',
+    severity: 'Medium',
+    reason: 'EPEAT Gold badge verified on item requisition.',
+    recommendation: 'Ready to proceed.',
+    explanation: 'Hardware purchases over $5,000 require ENERGY STAR/EPEAT energy efficiency certification.',
+    resolution: 'Rule passed. No action needed.'
+  },
+  {
+    id: 'POL-007',
+    vendor: 'GlobalTech Logistics',
+    ruleName: 'Single-Source Threshold Cap Limit',
+    status: 'Warning',
+    severity: 'High',
+    reason: 'Quote amount ($64,900) exceeds $20,000 single-source ceiling without alternate quotes.',
+    recommendation: 'Request two additional bids or upload sole-source justification memo.',
+    explanation: 'Single-source purchase orders exceeding $20,000 must include executive justifications.',
+    resolution: 'Acknowledge warning flag and upload sole-source justification attachment.'
+  },
+  {
+    id: 'POL-008',
+    vendor: 'CompSource Inc.',
+    ruleName: 'Payment Term Net-30 SLA Check',
+    status: 'Pass',
+    severity: 'Low',
+    reason: 'Vendor accepted standard Net-30 payment term.',
+    recommendation: 'Ready to proceed.',
+    explanation: 'Standard supplier payment timelines must align with net-30 or net-45 accounting terms.',
     resolution: 'Rule passed. No action needed.'
   }
 ];
@@ -258,7 +302,7 @@ export const PolicyValidationPage: React.FC = () => {
             <div className="space-y-4 text-xs font-normal">
               <div>
                 <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase mb-1">Scope & Policy Explanation</h4>
-                <p className="text-slate-650 dark:text-slate-400 leading-relaxed">{currentRule.explanation}</p>
+                <p className="text-slate-650 dark:text-slate-300 leading-relaxed">{currentRule.explanation}</p>
               </div>
 
               <div className="p-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-xl space-y-1">
@@ -311,7 +355,7 @@ export const PolicyValidationPage: React.FC = () => {
             >
               <div className="flex justify-between items-start border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div>
-                  <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                  <h3 className="text-sm font-bold text-slate-850 dark:text-slate-200">
                     Policy Override Signature
                   </h3>
                   <p className="text-[10px] text-slate-450 mt-0.5 leading-normal">
@@ -426,7 +470,7 @@ export const PolicyValidationPage: React.FC = () => {
 
                 <div>
                   <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase mb-0.5">Mandate Description</h4>
-                  <p className="text-slate-650 dark:text-slate-400 leading-relaxed">
+                  <p className="text-slate-650 dark:text-slate-300 leading-relaxed">
                     {selectedSummaryRule.explanation}
                   </p>
                 </div>
@@ -456,7 +500,7 @@ export const PolicyValidationPage: React.FC = () => {
 
                 <div>
                   <h4 className="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase mb-0.5">Recommended Resolution</h4>
-                  <p className="text-slate-650 dark:text-slate-400 leading-relaxed">
+                  <p className="text-slate-650 dark:text-slate-300 leading-relaxed">
                     {selectedSummaryRule.resolution}
                   </p>
                 </div>

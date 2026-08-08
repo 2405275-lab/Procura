@@ -22,7 +22,8 @@ import {
   BarChart3,
   Cpu,
   User,
-  BookOpen
+  BookOpen,
+  ChevronDown
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -77,6 +78,30 @@ const COMPANY_RULES_LIBRARY = [
     name: 'Price Variance Check',
     severity: 'Low',
     mandate: 'Individual item bid prices must remain within a 10% variance range of historical pricing.'
+  },
+  {
+    id: 'POL-005',
+    name: 'Banned Vendor Screening',
+    severity: 'Critical',
+    mandate: 'All supplier quotations must be screened against OFAC sanction registers prior to PO contract approval.'
+  },
+  {
+    id: 'POL-006',
+    name: 'Sustainability Compliance',
+    severity: 'Medium',
+    mandate: 'Hardware purchases over $5,000 require ENERGY STAR/EPEAT energy efficiency certification.'
+  },
+  {
+    id: 'POL-007',
+    name: 'Single-Source Cap Limit',
+    severity: 'High',
+    mandate: 'Single-source purchase orders exceeding $20,000 must include executive justifications.'
+  },
+  {
+    id: 'POL-008',
+    name: 'Payment Term Net-30 SLA',
+    severity: 'Low',
+    mandate: 'Standard supplier payment timelines must align with net-30 or net-45 accounting terms.'
   }
 ];
 
@@ -93,6 +118,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showRulesLibrary, setShowRulesLibrary] = useState(false);
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
 
   useEffect(() => {
@@ -213,34 +239,48 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                 {/* Rules Library directly under Policy Validation button */}
                 {item.path === '/policy-validation' && !isSidebarCollapsed && (
                   <div className="ml-4 mt-1.5 mb-2 pl-3 border-l border-slate-200 dark:border-slate-800 space-y-1.5 text-left">
-                    <div className="flex items-center gap-1.5 text-[9px] font-bold text-slate-450 dark:text-slate-500 uppercase tracking-widest mb-1.5 select-none">
-                      <BookOpen size={9} />
-                      <span>Company Rules Library</span>
-                    </div>
-                    {COMPANY_RULES_LIBRARY.map((rule) => (
-                      <Link
-                        key={rule.id}
-                        to={`/policy-validation?rule=${rule.id}`}
-                        className="block p-2 rounded-lg border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/20 hover:bg-primary-50/10 dark:hover:bg-primary-950/5 hover:border-primary-200/40 transition-all text-[10px] leading-relaxed"
-                      >
-                        <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
-                          <span>{rule.id}</span>
-                          <span className={cn(
-                            "px-1 py-0.5 rounded-[3px] text-[7.5px] font-bold uppercase scale-90 origin-right",
-                            rule.severity === 'Critical' 
-                              ? "bg-red-500/10 text-red-500" 
-                              : rule.severity === 'Medium' 
-                              ? "bg-amber-500/10 text-amber-500" 
-                              : "bg-slate-500/10 text-slate-500"
-                          )}>
-                            {rule.severity}
-                          </span>
-                        </div>
-                        <h5 className="font-bold text-slate-800 dark:text-slate-200 truncate mt-0.5">
-                          {rule.name}
-                        </h5>
-                      </Link>
-                    ))}
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowRulesLibrary(!showRulesLibrary);
+                      }}
+                      className="flex items-center justify-between w-full pr-2 text-[9px] font-bold text-slate-450 dark:text-slate-500 uppercase tracking-widest mb-1.5 select-none hover:text-slate-700 dark:hover:text-slate-300 transition-colors cursor-pointer"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <BookOpen size={9} />
+                        <span>Company Rules Library</span>
+                      </div>
+                      {showRulesLibrary ? <ChevronDown size={8} className="text-slate-400" /> : <ChevronRight size={8} className="text-slate-400" />}
+                    </button>
+
+                    {showRulesLibrary && (
+                      <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                        {COMPANY_RULES_LIBRARY.map((rule) => (
+                          <Link
+                            key={rule.id}
+                            to={`/policy-validation?rule=${rule.id}`}
+                            className="block p-2 rounded-lg border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/20 hover:bg-primary-50/10 dark:hover:bg-primary-950/5 hover:border-primary-200/40 transition-all text-[10px] leading-relaxed"
+                          >
+                            <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
+                              <span>{rule.id}</span>
+                              <span className={cn(
+                                "px-1 py-0.5 rounded-[3px] text-[7.5px] font-bold uppercase scale-90 origin-right",
+                                rule.severity === 'Critical' 
+                                  ? "bg-red-500/10 text-red-500" 
+                                  : rule.severity === 'Medium' || rule.severity === 'High'
+                                  ? "bg-amber-500/10 text-amber-500" 
+                                  : "bg-slate-500/10 text-slate-500"
+                              )}>
+                                {rule.severity}
+                              </span>
+                            </div>
+                            <h5 className="font-bold text-slate-800 dark:text-slate-200 truncate mt-0.5">
+                              {rule.name}
+                            </h5>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -345,31 +385,49 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                     {/* Mobile rules library sub-list */}
                     {item.path === '/policy-validation' && (
                       <div className="ml-4 mt-1 pl-3 border-l border-slate-200 dark:border-slate-800 space-y-1.5 text-left">
-                        {COMPANY_RULES_LIBRARY.map((rule) => (
-                          <Link
-                            key={rule.id}
-                            to={`/policy-validation?rule=${rule.id}`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="block p-2 rounded-lg border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/20 hover:bg-primary-50/10 dark:hover:bg-primary-950/5 hover:border-primary-200/40 transition-all text-[10px] leading-relaxed"
-                          >
-                            <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
-                              <span>{rule.id}</span>
-                              <span className={cn(
-                                "px-1 py-0.5 rounded-[3px] text-[7.5px] font-bold uppercase scale-90 origin-right",
-                                rule.severity === 'Critical' 
-                                  ? "bg-red-500/10 text-red-500" 
-                                  : rule.severity === 'Medium' 
-                                  ? "bg-amber-500/10 text-amber-500" 
-                                  : "bg-slate-500/10 text-slate-500"
-                              )}>
-                                {rule.severity}
-                              </span>
-                            </div>
-                            <h5 className="font-bold text-slate-800 dark:text-slate-200 truncate mt-0.5">
-                              {rule.name}
-                            </h5>
-                          </Link>
-                        ))}
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowRulesLibrary(!showRulesLibrary);
+                          }}
+                          className="flex items-center justify-between w-full pr-2 text-[9px] font-bold text-slate-455 dark:text-slate-500 uppercase tracking-widest mb-1.5 select-none hover:text-slate-700 dark:hover:text-slate-300 transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-1.5">
+                            <BookOpen size={9} />
+                            <span>Company Rules Library</span>
+                          </div>
+                          {showRulesLibrary ? <ChevronDown size={8} className="text-slate-400" /> : <ChevronRight size={8} className="text-slate-400" />}
+                        </button>
+
+                        {showRulesLibrary && (
+                          <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                            {COMPANY_RULES_LIBRARY.map((rule) => (
+                              <Link
+                                key={rule.id}
+                                to={`/policy-validation?rule=${rule.id}`}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="block p-2 rounded-lg border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/20 hover:bg-primary-50/10 dark:hover:bg-primary-950/5 hover:border-primary-200/40 transition-all text-[10px] leading-relaxed"
+                              >
+                                <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
+                                  <span>{rule.id}</span>
+                                  <span className={cn(
+                                    "px-1 py-0.5 rounded-[3px] text-[7.5px] font-bold uppercase scale-90 origin-right",
+                                    rule.severity === 'Critical' 
+                                      ? "bg-red-500/10 text-red-500" 
+                                      : rule.severity === 'Medium' || rule.severity === 'High'
+                                      ? "bg-amber-500/10 text-amber-500" 
+                                      : "bg-slate-500/10 text-slate-500"
+                                  )}>
+                                    {rule.severity}
+                                  </span>
+                                </div>
+                                <h5 className="font-bold text-slate-800 dark:text-slate-200 truncate mt-0.5">
+                                  {rule.name}
+                                </h5>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
